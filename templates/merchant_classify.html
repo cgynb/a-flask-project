@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}商家分类{% endblock %}
+{% block body %}
+    <form action="{{ url_for('food.merchant_list') }}">
+        <div class="input-group mb-3" style="width: 20em;">
+            <input type="text" class="form-control" name="keyword" placeholder="输入店名" aria-label="Recipient's username"
+                   aria-describedby="button-addon2">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="submit" id="button-addon2">搜索</button>
+            </div>
+        </div>
+    </form>
+    <div class="row row-cols-1 row-cols-md-2">
+        <div class="col mb-4">
+            <div class="card">
+                <img src="https://tse4-mm.cn.bing.net/th/id/OIP-C.77KpIivQipwTN-4olGhu0gHaE8?pid=ImgDet&rs=1"
+                     class="card-img-top" alt="早餐">
+                <div class="card-body">
+                    <h5 class="card-title">早餐</h5>
+                    <p class="card-text">早餐对人体的健康非常重要。如果不吃早餐,胃里没有食物可以消化，整个上午的精力都会比较差，而且还会患上某些肠胃疾病。</p>
+                    <a href="{{ url_for('food.merchant_list') }}?label=早餐" class="btn btn-primary">查看</a>
+                </div>
+            </div>
+        </div>
+        <div class="col mb-4">
+            <div class="card">
+                <img src="https://tse1-mm.cn.bing.net/th/id/R-C.e136430b397fc448ccfda8dd53ddef34?rik=YfejPimKrZ5Khw&riu=http%3a%2f%2f5b0988e595225.cdn.sohucs.com%2fimages%2f20191107%2f08c2ee17fc7746cbaa314a2c0724c13a.jpeg&ehk=vtMrmjcNMmNbeiBsiq5t3YwxaOtg1XD4faTpkDtaNb0%3d&risl=&pid=ImgRaw&r=0"
+                     class="card-img-top" alt="午餐">
+                <div class="card-body">
+                    <h5 class="card-title">午餐</h5>
+                    <p class="card-text">
+                        午餐在一日三餐中是最重要的，为整天提供的能量和素都是最重的，分别占了40%；对人在一天中体力和脑力的补充，起了承上启下的作用。所以午餐不只要吃饱，更要吃好。</p>
+                    <a href="{{ url_for('food.merchant_list') }}?label=午餐" class="btn btn-primary">查看</a>
+                </div>
+            </div>
+        </div>
+        <div class="col mb-4">
+            <div class="card">
+                <img src="https://tse2-mm.cn.bing.net/th/id/OIP-C.k0c_CAEhYQZdXHvFF8_lVAHaE3?pid=ImgDet&rs=1"
+                     class="card-img-top" alt="晚餐">
+                <div class="card-body">
+                    <h5 class="card-title">晚餐</h5>
+                    <p class="card-text">晚饭的质量和数量决定了我们的体重和寿命，尤其是想要减肥的朋友，晚餐一定要少吃。可以多吃一些水果，多喝水，增加饱腹感，还能少摄取热量。</p>
+                    <a href="{{ url_for('food.merchant_list') }}?label=晚餐" class="btn btn-primary">查看</a>
+                </div>
+            </div>
+        </div>
+        <div class="col mb-4">
+            <div class="card">
+                <img src="https://fs.zhenjiang365.cn/bbsatt/day_170425/1704251059929003a848d86741.jpg"
+                     class="card-img-top" alt="夜宵">
+                <div class="card-body">
+                    <h5 class="card-title">夜宵</h5>
+                    <p class="card-text">晚上入睡前喝一杯牛奶吃一片面包，这样一顿健康的夜宵，不仅对其生长发育有益，也有助于提高学习效率。</p>
+                    <a href="{{ url_for('food.merchant_list') }}?label=夜宵" class="btn btn-primary">查看</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}商家列表{% endblock %}
+{% block body %}
+    <h4>{{ label }}商家</h4>
+{% for merchant in merchants %}
+    <div class="card">
+        <div class="card-header">
+            {{ merchant.join_time }}入驻饿了不的老店
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">
+                {{ merchant.username }}
+                <img src={{ url_for('static', filename='images/avatar/' + '{}'.format(merchant.id) + '.png') }}  alt="英俊潇洒的头像"
+                        onerror="this.src='{{ avatars.robohash(merchant.username) }}'"  style="width: 6em; height: 6em; border-radius: 50%; float: right"/>
+            </h5>
+            <p class="card-text">主打：{{ merchant.label }}</p>
+            <a href="{{ url_for('food.merchant_homepage') }}?id={{ merchant.id }}" class="btn btn-primary">进店看看</a>
+        </div>
+    </div>
+{% endfor %}
+
+    <div class="row">
+        <div class="col"></div>
+        <div class="col">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('food.merchant_list') }}?page={{ current_page - 1 }}&label={{ label }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {% if total_page <= 5 %}
+                        {% for p in range(total_page) %}
+                            <li class="page-item"><a class="page-link" href="{{ url_for('food.merchant_list') }}?page={{ p + 1 }}&label={{ label }}">{{ p + 1 }}</a></li>
+                        {% endfor %}
+                    {% else %}
+                        {% if 1 < current_page < total_page %}
+                            <li class="page-item"><a class="page-link" href="/?page=1">1</a></li>
+                            <li class="page-item disabled"><a class="page-link" href="">...</a></li>
+                            <li class="page-item"><a class="page-link"
+                                                     href="{{ url_for('food.merchant_list') }}?page={{ current_page - 1 }}&label={{ label }}">{{ current_page - 1 }}</a>
+                            </li>
+                            <li class="page-item"><a class="page-link"
+                                                     href="{{ url_for('food.merchant_list') }}?page={{ current_page }}&label={{ label }}">{{ current_page }}</a></li>
+                            <li class="page-item"><a class="page-link"
+                                                     href="{{ url_for('food.merchant_list') }}?page={{ current_page + 1 }}&label={{ label }}">{{ current_page + 1 }}</a>
+                            </li>
+                            <li class="page-item disabled"><a class="page-link" href="">...</a></li>
+                            <li class="page-item"><a class="page-link"
+                                                     href="{{ url_for('food.merchant_list') }}?page={{ total_page }}&label={{ label }}">{{ total_page }}</a>
+                            </li>
+                        {% elif current_page == 1 %}
+                            <li class="page-item"><a class="page-link" href="/?page=1">1</a></li>
+                            <li class="page-item disabled"><a class="page-link" href="">...</a></li>
+                            <li class="page-item"><a class="page-link"
+                                                     href="{{ url_for('food.merchant_list') }}?page={{ total_page - 1 }}&label={{ label }}">{{ total_page - 1 }}</a></li>
+                            <li class="page-item"><a class="page-link"
+                                                     href="{{ url_for('food.merchant_list') }}?page={{ total_page }}&label={{ label }}">{{ total_page }}</a>
+                            </li>
+                        {% elif current_page == total_page %}
+                            <li class="page-item"><a class="page-link" href="{{ url_for('food.merchant_list') }}?page=1&label={{ label }}">1</a></li>
+                            <li class="page-item"><a class="page-link" href="{{ url_for('food.merchant_list') }}?page=2&label={{ label }}">2</a></li>
+                            <li class="page-item disabled"><a class="page-link" href="">...</a></li>
+                            <li class="page-item"><a class="page-link"
+                                                     href="{{ url_for('food.merchant_list') }}?page={{ total_page }}&label={{ label }}">{{ total_page }}</a>
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('food.merchant_list') }}?page={{ current_page + 1 }}&label={{ label }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col"></div>
+    </div>
+
+{% endblock %}

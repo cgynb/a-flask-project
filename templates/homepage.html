@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block title %}个人主页{% endblock %}
+{% block head %}
+{% endblock %}
+{% block body %}
+
+    <div class="row">
+        <div class="col"></div>
+        <div class="col-8" style="background-color: white; margin-top: 20px; padding: 2em">
+            <h3>
+                    <img src={{ url_for('static', filename='images/avatar/' + '{}'.format(g.user.id) + '.png') }}  alt="英俊潇洒的头像"
+                        onerror="this.src='{{ avatars.robohash(user.username) }}'"  style="width: 6em; height: 6em; border-radius: 50%"/>
+                {{ role }} {{ user.username }}
+            </h3>
+            <a href="{{ url_for('user.upload_avatar') }}" style="text-decoration: none">
+                <button type="button" class="btn btn-light" style="margin-left: 1em; margin-bottom: 10px">更换头像</button>
+            </a>
+            <a href="{{ url_for('user.change_password') }}" style="text-decoration: none">
+                <button type="button" class="btn btn-light" style="margin-left: 1em;margin-bottom: 10px">更换密码</button>
+            </a>
+            <form class="form-inline" action="{{ url_for('user.change_username') }}" method="post">
+                <div class="form-group mx-sm-3 mb-2">
+                    <input type="text" class="form-control" id="inputPassword2" placeholder="用户名" name="username">
+                </div>
+                <button type="submit" class="btn btn-light mb-2">改用户名</button>
+            </form>
+            <hr>
+            <a href="{{ url_for('user.collection') }}"  style="text-decoration: none">
+                <button type="submit" class="btn btn-light mb-2">收藏夹</button>
+            </a>
+            <a href="{{ url_for('user.follow_list') }}" style="text-decoration: none">
+                <button type="submit" class="btn btn-light mb-2">关注列表</button>
+            </a>
+            <hr>
+            {% if role == '商家' %}
+                <h5>标签：{{ label }}</h5>
+                <form class="form-inline" action="{{ url_for('user.update_label') }}" method="post">
+                    <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref" name="label">
+                        <option value="早餐" selected>早餐</option>
+                        <option value="午餐">午餐</option>
+                        <option value="晚餐">晚餐</option>
+                        <option value="夜宵">夜宵</option>
+                    </select>
+                    <button type="submit" class="btn btn-light my-1">修改标签</button>
+                </form>
+                <hr>
+                <p>已售出{{ total_number }}份食品，盈利{{ total_earn }}元</p>
+                <hr>
+                <p>共消费{{ total_consumn }}元<a href="{{ url_for('user.bill') }}"
+                                             style="margin-left: 1em;text-decoration: none">
+                    <button class="btn btn-light mb-2">查看购买记录</button>
+                </a></p>
+                <hr>
+                <a href="{{ url_for('food.upload_food') }}" style="margin-left: 1em">
+                    <button class="btn btn-light mb-2">上架菜品</button>
+                </a>
+                {% for message in get_flashed_messages() %}
+                    <div class="form-group" style="margin-left: 20px">
+                        <small class="text-danger">{{ message }}</small>
+                    </div>
+                {% endfor %}
+                <form class="form-inline" action="{{ url_for('food.delete_food') }}" method="post"
+                      style="text-align: right; margin-top: 0;margin-bottom: 1em">
+                    <div class="form-group mx-sm-3 mb-2">
+                        <input type="text" class="form-control" id="inputPassword2" placeholder="食品id"
+                               name="id">
+                    </div>
+                    <button type="submit" class="btn btn-light mb-2">下架菜品</button>
+                </form>
+                <form class="form-inline" action="{{ url_for('user.upload_food_photo') }}" style="text-align: right; margin-top: 0;margin-bottom: 1em">
+                    <div class="form-group mx-sm-3 mb-2">
+                        <input type="text" class="form-control" id="inputPassword2" placeholder="食品id"
+                               name="id">
+                    </div>
+                    <button type="submit" class="btn btn-light mb-2">上传图片</button>
+                </form>
+                <h3 style="margin: 20px">本店菜品</h3>
+                <ul class="list-group">
+                    {% for food in foods %}
+                        <li class="list-group-item">
+                            <a class="list-group-item list-group-item-action"
+                               href="{{ url_for('food.food_details') }}?id={{ food.id }}">{{ food.food_name }}<span
+                                    class="badge badge-primary badge-pill"
+                                    style="float: right">{{ food.id }}</span></a>
+                            <p style="text-align: right">只需{{ food.food_price }}￥</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+
+            {% elif role == '顾客' %}
+                <p>共消费{{ total_consumn }}元<a href="{{ url_for('user.bill') }}"
+                                             style="margin-left: 1em;text-decoration: none">
+                    <button class="btn btn-light mb-2">查看购买记录</button>
+                </a></p>
+            {% else %}
+                <p>共消费{{ total_consumn }}元<a href="{{ url_for('user.bill') }}"
+                                             style="margin-left: 1em;text-decoration: none">
+                    <button class="btn btn-light mb-2">查看购买记录</button>
+                </a></p>
+                <hr>
+                <p>送出{{ total_order }}份订单</p>
+                <p>收入{{ total_earn }}￥<a href="{{ url_for('user.history_order') }}"
+                                         style="margin-left: 1em;text-decoration: none">
+                    <button class="btn btn-light mb-2">查看送出订单</button>
+                </a></p>
+            {% endif %}
+        </div>
+        <div class="col"></div>
+    </div>
+{% endblock %}

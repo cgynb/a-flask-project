@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}上传菜品{% endblock %}
+{% block head %}
+    {{ dropzone.load_css() }}
+    {{ dropzone.style('border: 10px solid black; border-radius: 20px; width: 540px; text-align:center;') }}
+    {{ dropzone.load_js() }}
+    {{ dropzone.config(max_files=1, default_message='只能上传一张图片哦!') }}
+{% endblock %}
+{% block body %}
+        <div class="row">
+        <div class="col"></div>
+        <div class="col-6" style="margin: 17em">
+            {{ dropzone.create(action=url_for('user.upload_food_photo')) }}
+        </div>
+        <div class="col"></div>
+    </div>
+{% endblock %}

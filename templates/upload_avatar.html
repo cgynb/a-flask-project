@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}上传头像{% endblock %}
+
+{% block head %}
+    {{ dropzone.load_css() }}
+    {{ dropzone.style('border: 10px solid black; border-radius: 20px;margin: 10%; width: 13em; height:13em; text-align:center;') }}
+{% endblock %}
+
+{% block body %}
+    {{ dropzone.load_js() }}
+    {{ dropzone.config(max_files=1, default_message='只能上传一张头像哦!') }}
+    <div class="row" style="margin-top: 3em">
+        <div class="col">
+            <a href={{ url_for('user.homepage') }}><button type="submit" class="btn btn-light mb-2">返回个人主页</button></a>
+        </div>
+        <div class="col">
+                {{ dropzone.create(action=url_for('user.upload_avatar')) }}
+        </div>
+        <div class="col"></div>
+    </div>
+{% endblock %}

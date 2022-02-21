@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block title %}食品详情{% endblock %}
+{% block head %}{% endblock %}
+{% block body %}
+    <div class="row">
+        <div class="col-7" style="background-color: white; margin: 20px">
+            <img style="width:25em; height: 20em;float: right"
+                 src={{ url_for('static', filename="/images/food/{}/{}.png".format(food.id, food.id)) }}
+                         class="card-img-top" alt="好吃的"
+                 onerror="this.src='https://bpic.588ku.com/art_water_pic/19/04/08/8e7fc58748b4bdcc865218b3e9e1f774.jpg'"/>
+            <h3 style="margin-top: 2em">
+                {{ food.food_name }}
+                {% if collect_status == True %}
+                    <a href="{{ url_for('food.collect') }}?id={{ food.id }}">
+                        <img src="{{ url_for('static', filename='images/collect/collected.png') }}"
+                             style="width: 1em;float: right;margin-right: 2em">
+                    </a>
+                {% else %}
+                    <a href="{{ url_for('food.collect') }}?id={{ food.id }}">
+                        <img src="{{ url_for('static', filename='images/collect/tocollect.png') }}"
+                             style="width: 1em;float: right;margin-right: 2em">
+                    </a>
+                {% endif %}
+            </h3>
+            <hr>
+            <h5>店家：{{ food.merchant_name }}
+                <form action="{{ url_for('user.follow') }}" method="post">
+                    <input type="hidden" name="followed_id" value="{{ food.merchant_id }}">
+                    {% if follow_status %}
+                        <button type="submit" class="btn btn-light mb-2" style="margin-top: 10px">已关注</button>
+                    {% else %}
+                        <button type="submit" class="btn btn-info mb-2" style="margin-top: 10px">关注</button>
+                    {% endif %}
+                </form>
+            </h5>
+            <hr>
+            <p>点赞数：{{ food.zans }}</p>
+            <hr>
+            <p>价格：{{ food.food_price }}￥</p>
+            <hr>
+            <p class="text-monospace">食物描述：<br><br>{{ food.food_desc }}</p>
+            <form class="form-inline" action="{{ url_for('food.get_food') }}" method="post" style="margin-bottom: 2em">
+                <input type="hidden" name="food_price" value="{{ food.food_price }}">
+                <input type="hidden" name="food_id" value="{{ food.id }}">
+                <input type="hidden" name="food_name" value="{{ food.food_name }}">
+                <input type="hidden" name="merchant_id" value="{{ food.merchant_id }}">
+                <input type="hidden" name="customer_id" value="{{ user.id }}">
+                <input type="hidden" name="rider_salary" value="{{ food.food_price * 0.2 }}">
+                <button type="submit" class="btn btn-primary mb-2">买它！！</button>
+            </form>
+        </div>
+        <div class="col" style="background-color: white; margin: 20px">
+            <h4>评论区：</h4>
+            <form action="{{ url_for('food.comment') }}" method="post" style="margin-top: 2em">
+                <input type="hidden" name="food_id" value="{{ food.id }}">
+                <div class="input-group">
+                    <textarea class="form-control" aria-label="With textarea" placeholder="写下你的评论吧"
+                              name="comment"></textarea>
+                </div>
+                <div class="form-group" style="text-align: right">
+                    <button type="submit" class="btn btn-light mb-2">发布</button>
+                </div>
+            </form>
+            {% for food_comment in food_comments %}
+                <p>
+                    <img src={{ url_for('static', filename='images/avatar/' + '{}'.format(food_comment.author_id) + '.png') }}  alt="英俊潇洒的头像"
+                        onerror="this.src='{{ avatars.robohash(food_comment.username) }}'"  style="width: 2em; height: 2em; border-radius: 50%"/>
+                    {{ food_comment.username }}:
+                </p>
+                <div class="overflow-auto" style="width: 22em; height: 6em">
+                    <p style="word-break:break-all">
+                        {{ food_comment.comment }}</p>
+                </div>
+                <small class="text-muted" style="text-align: right">{{ food_comment.create_time }}</small>
+                <hr>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

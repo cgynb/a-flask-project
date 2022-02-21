@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}查看订单{% endblock %}
+{% block body %}
+<div class="row">
+    <div class="col"></div>
+    <div class="col-8">
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">订单情况</th>
+      <th scope="col">商品名</th>
+      <th scope="col">商家接单</th>
+      <th scope="col">骑手接单</th>
+      <th scope="col">下单时间</th>
+      <th scope="col">是否到达</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for i in range(order_num) %}
+    <tr>
+      <th scope="row">{{ i + 1 }}</th>
+      <td>{{ orders[i].food_name }}</td>
+      {% if orders[i].merchant_take_order %}
+        <td>✓</td>
+      {% else %}
+        <td>✕</td>
+      {% endif %}
+      {% if orders[i].rider_id %}
+        <td>{{ orders[i].rider_id }}号骑手为您送单</td>
+      {% else %}
+        <td>✕</td>
+      {% endif %}
+      <td>{{ orders[i].order_date }}</td>
+      <td><a href="{{ url_for('user.arrive') }}/?id={{ orders[i].id }}">已送达</a></td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+    </div>
+    <div class="col"></div>
+</div>
+
+{% endblock %}
