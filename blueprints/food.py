@@ -153,7 +153,7 @@ def get_food():
     food = FoodModel.query.filter(FoodModel.id == food_id).first()
     food.order_number += 1
     db.session.commit()
-    return redirect(url_for('food.index'))
+    return redirect(url_for('user.view_order'))
 
 
 @bp.route('/zan/')
