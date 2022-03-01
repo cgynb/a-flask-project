@@ -63,7 +63,8 @@ def food_details():
     food = FoodModel.query.filter(FoodModel.id == food_id).first()
     col = CollectModel.query.filter(and_(CollectModel.user_id == g.user.id, CollectModel.food_id == food_id)).first()
     food_comments = db.session.\
-        query(CommentModel.comment, CommentModel.create_time, CommentModel.author_id, UserModel.username).\
+        query(CommentModel.comment, CommentModel.create_time, CommentModel.author_id, CommentModel.id,
+              CommentModel.food_id, UserModel.username).\
         filter(and_(CommentModel.food_id == food_id, UserModel.id == CommentModel.author_id)).all()
     if col is None:
         collect_status = False

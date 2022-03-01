@@ -32,3 +32,13 @@ def rider_required(func):
         else:
             return redirect(url_for('food.index'))
     return wrapper
+
+
+def admin_required(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        if g.role == '管理员':
+            return func(*args, **kwargs)
+        else:
+            return redirect(url_for('food.index'))
+    return wrapper

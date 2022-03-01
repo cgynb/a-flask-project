@@ -40,7 +40,13 @@
                         <a class="nav-link" href="{{ url_for('user.take_order') }}">接单</a>
                     </li>
                 {% elif role == '顾客' %}
-
+                {% elif role == '管理员' %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('admin.handle_comment') }}">管理评论</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('admin.handle_food') }}">管理食物</a>
+                    </li>
                 {% endif %}
                 <li class="nav-item ml-2">
                     <form class="form-inline my-2 my-lg-0" action="{{ url_for('food.index') }}">

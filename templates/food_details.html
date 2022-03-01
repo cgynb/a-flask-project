@@ -71,7 +71,11 @@
                     <p style="word-break:break-all">
                         {{ food_comment.comment }}</p>
                 </div>
-                <small class="text-muted" style="text-align: right">{{ food_comment.create_time }}</small>
+                {% if g.role == '管理员' %}
+                    <small class="text-muted" style="text-align: right"><a href="{{ url_for('admin.handle_comment') }}/?food_id={{ food_comment.food_id }}&comment_id={{ food_comment.id }}">删除评论</a></small>
+                {% else %}
+                    <small class="text-muted" style="text-align: right">{{ food_comment.create_time }}</small>
+                {% endif %}
                 <hr>
             {% endfor %}
         </div>

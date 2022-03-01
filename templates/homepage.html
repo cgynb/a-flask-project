@@ -92,7 +92,7 @@
                                              style="margin-left: 1em;text-decoration: none">
                     <button class="btn btn-light mb-2">查看购买记录</button>
                 </a></p>
-            {% else %}
+            {% elif role == '骑手' %}
                 <p>共消费{{ total_consumn }}元<a href="{{ url_for('user.bill') }}"
                                              style="margin-left: 1em;text-decoration: none">
                     <button class="btn btn-light mb-2">查看购买记录</button>
@@ -103,6 +103,7 @@
                                          style="margin-left: 1em;text-decoration: none">
                     <button class="btn btn-light mb-2">查看送出订单</button>
                 </a></p>
+            {% elif role == '管理员' %}
             {% endif %}
         </div>
         <div class="col"></div>

@@ -4,7 +4,7 @@ from flask_migrate import Migrate
 import config
 from exts import db, mail, avatars, dropzone
 
-from blueprints import user_bp, food_bp
+from blueprints import user_bp, food_bp, admin_bp
 
 from models import UserModel, MerchantsModel
 
@@ -18,6 +18,8 @@ dropzone.init_app(app)
 
 app.register_blueprint(food_bp)
 app.register_blueprint(user_bp)
+app.register_blueprint(admin_bp)
+
 migrate = Migrate(app, db)
 
 
