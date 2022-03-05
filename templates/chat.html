@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+
+    <!--Let browser know website is optimized for mobile-->
+    <link rel="shortcut icon" href="/static/1.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>CGY's ChatRoom</title>
+    <style>
+        div.col.s12.m8.l9.white {
+            overflow-y: scroll;
+            word-wrap: break-word;
+            height: 700px;
+            width: 650px;
+            margin-top: 2em;
+            padding: 2em 3em;
+        }
+
+        h5 {
+            text-align: center;
+        }
+        .tag {
+            padding: 6px 10px;
+            border-radius: 9px;
+        }
+        .connect-info {
+            margin:0 auto ;
+            padding: 6px 10px;
+            border-radius: 9px;
+        }
+    </style>
+</head>
+
+<body class="blue-grey lighten-5">
+<!--Import jQuery before materialize.js-->
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+<nav>
+    <div class="nav-wrapper teal">
+        <a href="" class="brand-logo center">聊天室</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a id="logout" href="{{ url_for('logout') }}">退出登录</a></li>
+        </ul>
+    </div>
+</nav>
+<div class="container">
+    <div class="row">
+        <div class="col s12 m4 l3">
+            <div class="input-field col s12 z-depth-5">
+                <h5 id="username">{{ username }}</h5>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="send-msg-inp" type="text" class="validate">
+                    <button id="send-msg-btn" class="btn waves-effect waves-light teal right" type="button"
+                            name="action">
+                        send
+                        <i class="material-icons right">send</i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="message-box" class="col s12 m8 l9 white z-depth-1">
+        </div>
+    </div>
+</div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.1/socket.io.js"></script>
+    <script>
+        let inp = document.querySelector('#send-msg-inp')
+        let sendMsgBtn = document.querySelector('#send-msg-btn')
+        let messageBox = document.querySelector('#message-box')
+        let socket = io();
+        // 连接
+        socket.connect(location.protocol + '//' + document.domain + ':' + location.port);
+        // 发送消息
+        sendMsgBtn.onclick = function () {
+            let inp = document.querySelector('#send-msg-inp')
+            let msg = inp.value
+            let user = document.querySelector('#username').innerHTML
+            inp.value = ''
+            if(msg){
+                socket.emit('send msg', {
+                    user: user,
+                    message: msg
+                })
+            }else {
+                alert('消息不能为空')
+            }
+        }
+        // 回车发送消息
+        inp.addEventListener("keyup", function(event) {
+            event.preventDefault();
+            if (event.keyCode === 13) {
+                sendMsgBtn.click();
+            }
+        });
+        // 连接的信息
+        socket.on('connect info', function (data) {
+            console.log(data)
+            let connectInfo = document.createElement('div')
+            connectInfo.className = 'row'
+            let msg = `
+              <div class="col s4 offset-s4">
+                <div class="connect-info grey lighten-4 center" >
+                  <span class="black-text">${data}
+                  </span>
+                </div>
+              </div>`
+            connectInfo.innerHTML = msg
+            messageBox.appendChild(connectInfo)
+        })
+        // 接受消息
+        socket.on('send msg', function (data) {
+            console.log(data)
+            let msg = null
+            let msgbox = document.createElement('div')
+            msgbox.className = 'row'
+            if (data.user === document.querySelector('#username').innerHTML) {
+                msg = `
+              <div class="col right">
+                <div class="tag teal z-depth-3" >
+                  <span class="white-text">${data.message}
+                  </span>
+                </div>
+              </div>`
+            } else {
+                msg = `
+              <div class="col">
+                <div class="tag z-depth-3">
+                  <span class="teal-text"><b>${data.user}</b>:  ${data.message}
+                  </span>
+                </div>
+              </div>`
+            }
+            msgbox.innerHTML = msg
+            messageBox.appendChild(msgbox)
+        })
+    </script>
+</body>
+</html>
