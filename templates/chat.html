@@ -26,6 +26,7 @@
         .tag {
             padding: 6px 10px;
             border-radius: 9px;
+            max-width: 15em;
         }
         .connect-info {
             margin:0 auto ;
@@ -116,6 +117,7 @@
         // 接受消息
         socket.on('send msg', function (data) {
             console.log(data)
+            console.log(socket.id)
             let msg = null
             let msgbox = document.createElement('div')
             msgbox.className = 'row'
@@ -138,6 +140,7 @@
             }
             msgbox.innerHTML = msg
             messageBox.appendChild(msgbox)
+            messageBox.scrollTop = messageBox.scrollHeight
         })
     </script>
 </body>
