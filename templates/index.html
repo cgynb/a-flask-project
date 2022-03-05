@@ -22,17 +22,25 @@
     </div>
 </nav>
 <div class="container">
+    <div class="row"></div>
+    <div class="row"></div>
     <div class="row">
-        <h5 class="flow-text teal-text center">输入昵称</h5>
         <div class="col s4 offset-s4 ">
             <form class="col s12" method="post" action="{{ url_for('index') }}">
                 <div class="row">
                     <div class="input-field col s12">
-                        <i class="material-icons prefix">account_circle</i>
-                        <input id="icon_prefix" type="text" class="validate" name="username">
+                        <input value="" id="username" type="text" class="validate" name="username">
+                        <label class="active" for="username">昵称</label>
                     </div>
                 </div>
-                    <button id="submit" class="btn waves-effect waves-light teal z-depth-3 right" type="submit" name="action">开始聊天
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input value="默认" id="room" type="text" class="validate" name="room">
+                        <label class="active" for="room">房间</label>
+                    </div>
+                </div>
+                <button id="submit" class="btn waves-effect waves-light teal z-depth-3 right" type="submit"
+                        name="action">开始聊天
                     <i class="material-icons right">send</i>
                 </button>
             </form>
@@ -40,17 +48,18 @@
     </div>
 </div>
 <script>
-    let inp = document.querySelector('#icon_prefix');
-let btn = document.querySelector('#submit');
-setInterval(function () {
-    if(inp.value){
-        btn.classList.remove('disabled');
-    }else{
-        if(!btn.classList.contains('disabled')){
-            btn.classList.add('disabled');
+    let inp = document.querySelector('#username');
+    let roominp = document.querySelector('#room');
+    let btn = document.querySelector('#submit');
+    setInterval(function () {
+        if (inp.value && roominp.value) {
+            btn.classList.remove('disabled');
+        } else {
+            if (!btn.classList.contains('disabled')) {
+                btn.classList.add('disabled');
+            }
         }
-    }
-}, 300);
+    }, 300);
 </script>
 </body>
 </html>

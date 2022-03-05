@@ -42,7 +42,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
 <nav>
     <div class="nav-wrapper teal">
-        <a href="" class="brand-logo center">聊天室</a>
+        <a href="" class="brand-logo center">聊天室({{ room }} 房间)</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
             <li><a id="logout" href="{{ url_for('logout') }}">退出登录</a></li>
         </ul>
@@ -71,12 +71,20 @@
 </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.1/socket.io.js"></script>
     <script>
+        let room = '{{ room }}'
         let inp = document.querySelector('#send-msg-inp')
         let sendMsgBtn = document.querySelector('#send-msg-btn')
         let messageBox = document.querySelector('#message-box')
         let socket = io();
         // 连接
         socket.connect(location.protocol + '//' + document.domain + ':' + location.port);
+
+        socket.emit('join', {
+            username: '{{ username }}',
+            room: room
+        })
+
+
         // 发送消息
         sendMsgBtn.onclick = function () {
             let inp = document.querySelector('#send-msg-inp')
@@ -86,7 +94,7 @@
             if(msg){
                 socket.emit('send msg', {
                     user: user,
-                    message: msg
+                    message: msg,
                 })
             }else {
                 alert('消息不能为空')
