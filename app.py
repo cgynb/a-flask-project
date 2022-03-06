@@ -73,6 +73,7 @@ def handle_connect_info(info):
 def handle_message(data):
     print('sendMsg' + str(data))
     room = session.get('room')
+    data['message'] = data.get('message').replace('<', '&lt;').replace('>', '&gt;').replace(' ', '&nbsp;')
     socketio.emit('send msg', data, to=room)
 
 
