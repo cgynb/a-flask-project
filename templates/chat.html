@@ -44,7 +44,7 @@
     <div class="nav-wrapper teal">
         <a href="" class="brand-logo center">聊天室({{ room }} 房间)</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li><a id="logout" href="{{ url_for('logout') }}">退出登录</a></li>
+            <li><a id="leaveroom" href="{{ url_for('logout') }}">退出房间</a></li>
         </ul>
     </div>
 </nav>
@@ -72,19 +72,26 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.1/socket.io.js"></script>
     <script>
         let room = '{{ room }}'
+        let username = '{{ username }}'
         let inp = document.querySelector('#send-msg-inp')
         let sendMsgBtn = document.querySelector('#send-msg-btn')
         let messageBox = document.querySelector('#message-box')
+        let leaveroom = document.querySelector('#leaveroom')
         let socket = io();
         // 连接
         socket.connect(location.protocol + '//' + document.domain + ':' + location.port);
-
+        // 加入房间
         socket.emit('join', {
-            username: '{{ username }}',
+            username: username,
             room: room
         })
-
-
+        // 退出房间
+        leaveroom.onclick = function () {
+            socket.emit('leave', {
+                username: username,
+                room: room
+            })
+        }
         // 发送消息
         sendMsgBtn.onclick = function () {
             let inp = document.querySelector('#send-msg-inp')

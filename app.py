@@ -9,6 +9,10 @@ socketio = SocketIO()
 socketio.init_app(app)
 
 
+online_user = []
+room_user = {}
+
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'GET':
@@ -44,7 +48,9 @@ def logout():
 @socketio.on('connect')
 def handle_connect():
     username = session.get('username')
-    print('connect info:  ' + f'{username}  connect')
+    online_user.append(username)
+    # print('connect info:  ' + f'{username}  connect')
+    # print(online_user)
     # socketio.emit('connect info', f'{username}  connect')
 
 
@@ -74,8 +80,15 @@ def handle_message(data):
 def on_join(data):
     username = data.get('username')
     room = data.get('room')
+    try:
+        room_user[room].append(username)
+    except:
+        room_user[room] = []
+        room_user[room].append(username)
+
     join_room(room)
     print('join room:  ' + str(data))
+    print(room_user)
     socketio.emit('connect info', username + '加入房间', to=room)
 
 
@@ -83,8 +96,10 @@ def on_join(data):
 def on_leave(data):
     username = data.get('username')
     room = data.get('room')
+    room_user[room].remove(username)
     leave_room(room)
     print('leave room   ' + str(data))
+    print(room_user)
     socketio.emit('connect info', username + '离开房间', to=room)
 
 
