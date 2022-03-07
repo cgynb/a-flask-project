@@ -62,11 +62,11 @@ def handle_disconnect():
     # socketio.emit('connect info', f'{username}  disconnect')
 
 
-@socketio.on('connect info')
-def handle_connect_info(info):
-    print('connect info' + str(info))
-    room = session.get('room')
-    socketio.emit('connect info', info, to=room)
+# @socketio.on('connect info')
+# def handle_connect_info(info):
+#     print('connect info' + str(info))
+#     room = session.get('room')
+#     socketio.emit('connect info', info, to=room)
 
 
 @socketio.on('send msg')
