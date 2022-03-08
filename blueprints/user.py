@@ -36,6 +36,7 @@ def login():
             user = UserModel.query.filter_by(email=email).first()
             #                               数据库里的加密密码 和 登录密码 进行比对
             if user and check_password_hash(user.password, password):
+                session['username'] = user.username
                 session['user_id'] = user.id
                 session['role_id'] = user.role_id
                 return redirect('/')
@@ -179,7 +180,7 @@ def change_password():
 @login_required
 def bill():
     bills = OrderModel.query. \
-        filter(and_(g.user.id == OrderModel.customer_id, OrderModel.arrive == True)).\
+        filter(and_(g.user.id == OrderModel.customer_id, OrderModel.arrive == True)). \
         order_by(OrderModel.order_date.desc()).all()
     return render_template('bill.html', bills=bills)
 
@@ -197,9 +198,9 @@ def arrive():
 @bp.route('/order/')
 @login_required
 def view_order():
-    orders = db.session.\
+    orders = db.session. \
         query(OrderModel.food_name, OrderModel.id, OrderModel.merchant_take_order, OrderModel.order_date,
-              OrderModel.rider_id, OrderModel.arrive).\
+              OrderModel.rider_id, OrderModel.arrive). \
         filter(and_(OrderModel.customer_id == g.user.id, OrderModel.arrive == False)).all()
     return render_template('view_order.html', orders=orders, order_num=len(orders))
 
@@ -271,7 +272,7 @@ def merchant_take_order():
         order.merchant_take_order = True
         db.session.commit()
 
-    orders = OrderModel.query.\
+    orders = OrderModel.query. \
         filter(and_(g.user.id == OrderModel.merchant_id, OrderModel.merchant_take_order == False)).all()
     return render_template('merchant/merchant_take_order.html', orders=orders)
 
@@ -303,7 +304,6 @@ def upload_food_photo():
         return ''
 
 
-
 # ————————————————————————————————————————————骑手特有——————————————————————————————————————————————————————————————————
 @bp.route('/take_order/')
 @login_required
@@ -311,7 +311,7 @@ def upload_food_photo():
 def take_order():
     if request.args.get('id') is None:
         #                                   注意这里筛选的是用  is_(None)
-        orders = OrderModel.query.filter(and_(OrderModel.rider_id.is_(None), OrderModel.merchant_take_order == True)).\
+        orders = OrderModel.query.filter(and_(OrderModel.rider_id.is_(None), OrderModel.merchant_take_order == True)). \
             order_by(OrderModel.rider_salary.desc()).all()
         return render_template('rider/take_order.html', orders=orders)
     else:

@@ -2,9 +2,9 @@ from flask import Flask, session, g
 from flask_migrate import Migrate
 
 import config
-from exts import db, mail, avatars, dropzone
+from exts import db, mail, avatars, dropzone, socketio
 
-from blueprints import user_bp, food_bp, admin_bp
+from blueprints import user_bp, food_bp, admin_bp, chat_bp
 
 from models import UserModel, MerchantsModel
 
@@ -15,10 +15,12 @@ db.init_app(app)
 mail.init_app(app)
 avatars.init_app(app)
 dropzone.init_app(app)
+socketio.init_app(app)
 
 app.register_blueprint(food_bp)
 app.register_blueprint(user_bp)
 app.register_blueprint(admin_bp)
+app.register_blueprint(chat_bp)
 
 migrate = Migrate(app, db)
 
@@ -60,4 +62,4 @@ def context_processor():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    socketio.run(app, host='0.0.0.0', port=5000, debug=True)

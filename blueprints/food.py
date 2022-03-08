@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, g
+from flask import Blueprint, render_template, request, redirect, url_for, flash, g, jsonify
 from sqlalchemy import and_, or_
 from decorators import login_required, merchant_required
 from forms import FoodForm
@@ -160,12 +160,19 @@ def get_food():
 @bp.route('/zan/')
 def zan():
     order_id = request.args.get('order_id')
-    order = OrderModel.query.filter(OrderModel.id == order_id).first()
-    order.zan = not order.zan
-    food = FoodModel.query.filter(FoodModel.id == order.food_id).first()
-    food.zans += int(order.zan)
-    db.session.commit()
-    return redirect(url_for('user.bill'))
+    try:
+        if order_id:
+            order = OrderModel.query.filter(OrderModel.id == order_id).first()
+            order.zan = not order.zan
+            food = FoodModel.query.filter(FoodModel.id == order.food_id).first()
+            food.zans += int(order.zan)
+            db.session.commit()
+            data = {'status': 200, 'message': 'success'}
+        else:
+            data = {'status': 400, 'message': 'you should send order'}
+    except:
+        data = {'status': 400, 'message': 'not found order'}
+    return jsonify(data)
 
 
 @bp.route('/collect/')

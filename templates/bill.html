@@ -1,5 +1,13 @@
 {% extends "base.html" %}
 {% block title %}账单{% endblock %}
+{% block head %}
+    <style>
+        img {
+            float: right;
+            width: 25px;
+        }
+    </style>
+{% endblock %}
 {% block body %}
     <div class="row">
         <div class="col"></div>
@@ -9,13 +17,9 @@
                 {% for bill in bills %}
                     <li class="list-group-item">
                         {% if bill.zan == False %}
-                            <a href="{{ url_for('food.zan') }}?order_id={{ bill.id }}">
-                                <img style="float: right;width: 25px"
-                                     src="{{ url_for('static', filename='images/zan/tozan.jpg') }}"></a>
+                            <img order="{{ bill.id }}" src="/static/images/zan/tozan.jpg">
                         {% else %}
-                            <a href="{{ url_for('food.zan') }}?order_id={{ bill.id }}">
-                                <img style="float: right;width: 25px"
-                                     src="{{ url_for('static', filename='images/zan/zaned.jpg') }}"></a>
+                            <img order="{{ bill.id }}" src="/static/images/zan/zaned.jpg">
                         {% endif %}
                         {{ bill.food_name }}<p>{{ bill.food_price }}￥</p>
                         <small id="emailHelp" class="form-text text-muted"
@@ -26,4 +30,29 @@
         </div>
         <div class="col"></div>
     </div>
+{% endblock %}
+{% block script %}
+    <script src="/static/js/jquery-3.6.0.js"></script>
+    <script>
+        $('img').click(function () {
+            let orderId = $(this).attr('order')
+            let self = $(this)
+            $.ajax({
+                type: "GET",
+                url: "/zan/",
+                data: {"order_id": orderId},
+                success: function (resp) {
+                    if (self.attr('src') === '/static/images/zan/zaned.jpg') {
+                        self.attr('src', '/static/images/zan/tozan.jpg')
+                    } else {
+                        self.attr('src', '/static/images/zan/zaned.jpg')
+                    }
+                    console.log(resp)
+                },
+                error: function () {
+                    alert("请求出错了")
+                }
+            })
+        })
+    </script>
 {% endblock %}

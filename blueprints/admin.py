@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, g
+from flask import Blueprint, request, redirect, url_for
 from decorators import admin_required
 from models import CommentModel
 from exts import db

@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+{% block title %}联系商家骑手{% endblock %}
+{% block head %}
+    <script src="{{ url_for('static', filename='jquery/jquery.3.6.min.js') }}"></script>
+    <style>
+        .col-7 {
+            background-color: white;
+            height: 700px;
+            width: 650px;
+            margin-top: 2em;
+            padding: 2em 3em;
+        }
+
+        .sendMsg {
+            margin: 3em 0;
+        }
+
+        .sendBox {
+            margin: 1em 0;
+            height: 10em;
+        }
+        .row{
+            margin: 10px 0px;
+        }
+        .msg {
+            max-width: 15em;
+            margin: 9px 0;
+            padding: 4px 5px;
+            border-radius: 13px;
+            word-wrap: break-word;
+            background-color: #eeeeee;
+        }
+
+        .selfmsg {
+            max-width: 15em;
+            margin: 9px 0 0px auto;
+            padding: 4px 5px;
+            border-radius: 13px;
+            word-wrap: break-word;
+        }
+
+        .selfimg {
+            margin-left: 10px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            float: right;
+        }
+
+        .otherimg {
+            margin-right: 10px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            float: left;
+        }
+
+        .connect-info {
+            display: flex;
+            justify-content: center;
+        }
+        p{
+            margin: 5px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div id="messageBox" class="col-7 overflow-auto">
+        </div>
+        <div class="col-4">
+            <div class="sendMsg">
+                <div class="input-group sendBox">
+                    <textarea id="send-msg-inp" class="form-control" aria-label="With textarea" placeholder=""
+                              name="comment"></textarea>
+                </div>
+                <div class="form-group">
+                    <button id="sendMsgBtn" type="submit" class="btn btn-light mb-2 btn-block">发送</button>
+                </div>
+            </div>
+        </div>
+        <div class="col"></div>
+    </div>
+{% endblock %}
+{% block script %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.1/socket.io.js"></script>
+    <script>
+        let socket = io()
+        let room = '{{ room }}'
+        let username = '{{ username }}'
+        let role = '{{ role_id }}'
+        let sendMsgBtn = document.querySelector('#sendMsgBtn')
+        let messageBox = document.querySelector('#messageBox')
+        let inp = document.querySelector('#send-msg-inp')
+        socket.connect(location.protocol + '//' + document.domain + ':' + location.port);
+        // 加入房间
+        socket.emit('join', {
+            username: username,
+            room: room
+        })
+        // 退出房间
+        socket.on('disconnect', function () {
+            socket.emit('leave', {
+                username: username,
+                room: room
+            })
+        })
+        // 发送消息
+        sendMsgBtn.onclick = function () {
+            let msg = inp.value
+            inp.value = ''
+            if (msg) {
+                socket.emit('send msg', {
+                    user: username,
+                    message: msg,
+                    room: room,
+                    role: role
+                })
+                messageBox.scrollTop = messageBox.scrollHeight
+            } else {
+                alert('消息不能为空')
+            }
+        }
+        // 回车发送消息
+        inp.addEventListener("keyup", function (event) {
+            event.preventDefault();
+            if (event.keyCode === 13) {
+                sendMsgBtn.click();
+            }
+        });
+        // 连接的信息
+        {#socket.on('connect info', function (data) {#}
+        {#    console.log(data)#}
+        {#    let connectInfo = document.createElement('div')#}
+        {#    connectInfo.className = 'row'#}
+        {#    let msg = `#}
+        {#        <div class="connect-info shadow bg-light col-md-6">#}
+        {#             <p class="text-black">${data}</p>#}
+        {#        </div>`#}
+        {#    connectInfo.innerHTML = msg#}
+        {#    messageBox.appendChild(connectInfo)#}
+        {# })#}
+        // 接受消息
+        socket.on('send msg', function (data) {
+            console.log(data)
+            console.log(socket.id)
+            let msg = null
+            let msgbox = document.createElement('div')
+            msgbox.className = 'row'
+            if (data.user === username) {
+                msg = `<div class="selfmsg shadow bg-primary">
+                            <p class="text-white">
+                                ${data.message}</p>
+                        </div>
+                        <img class="selfimg shadow"
+                             src="/static/images/chat/${data.role}.png"  alt="英俊潇洒的头像"
+                             onerror="this.src='{{ avatars.robohash('hhhh') }}'"/>`
+            } else {
+                msg = `<img class="otherimg shadow" src="/static/images/chat/${data.role}.png"  alt="英俊潇洒的头像"
+                                        onerror="this.src='{{ avatars.robohash('hhhh') }}'"/>
+                        <div class="msg shadow">
+                            <p class="text-black">${data.message}</p>
+                        </div>`
+            }
+            msgbox.innerHTML = msg
+            if(data.message){
+                messageBox.appendChild(msgbox)
+                messageBox.scrollTop = messageBox.scrollHeight
+            }
+        })
+    </script>
+{% endblock %}
