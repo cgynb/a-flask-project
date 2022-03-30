@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}聊天列表{% endblock %}
+{% block head %}
+<style>
+    .remind{
+        background-color: #f57c00 !important;
+    }
+</style>
+{% endblock %}
+{% block body %}
+    <div class="row">
+    </div>
+{% endblock %}
+{% block script %}
+<script>
+let userid = '{{ userid }}';
+</script>
+<script src="/static/js/chatlist.js"></script>
+{% endblock %}

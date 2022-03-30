@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}注册{% endblock %}
+{% block body %}
+    <form action="{{ url_for('user.register') }}" method="post">
+        <div class="row">
+            <div class="center">
+                <i class="material-icons medium">account_circle</i>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col m4 offset-m4">
+                <input id="username" type="text" class="validate" name="username">
+                <label for="username">用户名</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col m4 offset-m4">
+                <input id="password" type="password" class="validate" name="password">
+                <label for="password">密码</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col m4 offset-m4">
+                <input id="c-password" type="password" class="validate" name="confirm">
+                <label for="c-password">确认密码</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col m3 offset-m4">
+                <input id="email" type="email" class="validate" name="email">
+                <label for="email">邮件</label>
+            </div>
+            <a id="captcha-btn" class="waves-effect waves-teal btn-flat">邮箱验证</a>
+        </div>
+              <div class="row">
+        <div class="input-field col m4 offset-m4">
+          <input id="email" type="text" class="validate" name="captcha">
+          <label for="email">验证码</label>
+        </div>
+      </div>
+        <div class="row">
+            <div class="input-field col m4 offset-m4" >
+                <select id="select" name="role">
+                    <option value="不要选" disabled selected>选择身份</option>
+                    <option value="1">顾客</option>
+                    <option value="2">商家</option>
+                    <option value="3">骑手</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col m4 offset-m4">
+                <button id="submit" class="btn waves-effect waves-light right disabled" type="submit" name="action">注册
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+
+{% block script %}
+    <script src="/static/js/register.js"></script>
+{% endblock %}

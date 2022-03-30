@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% block title %}店铺{% endblock %}
+{% block head %}
+    <style>
+        .food-img {
+            width: auto;
+            height: 10em;
+        }
+
+        .parallax-container {
+            height: 400px;
+        }
+
+        .comment {
+            max-height: 4em;
+            overflow-y: auto;
+        }
+        .comment-box{
+            padding: 1em;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+
+
+
+    <div class="parallax-container">
+        <div class="parallax"><img src="/static/images/1.jpg" onerror="this.src='/static/images/1.jpg'"></div>
+    </div>
+    <div class="section white">
+        <div class="row">
+            <div class="col offset-s1">
+                <h4 class="teal-text merchant-name"></h4>
+                <a class="waves-effect waves-light btn follow">关注</a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col m10 offset-m1 s12">
+                <ul class="collapsible food-list" data-collapsible="accordion"></ul>
+                <a class="waves-effect waves-light btn right" href="#modal1">下单</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <form class="col s12" method="post">
+            <div class="row">
+                <div class="input-field col s12">
+                    <textarea id="comment-textarea" class="materialize-textarea" name="comment"></textarea>
+                    <label for="comment-textarea">写下你的评论吧</label>
+                </div>
+            </div>
+            <a class="waves-effect waves-light btn right send-comment">发送评论<i class="material-icons right">send</i></a>
+        </form>
+    </div>
+    <div class="white comment-box">
+    </div>
+    <div class="parallax-container">
+        <div class="parallax"><img src="/static/images/1.jpg" onerror="this.src='/static/images/1.jpg'"></div>
+    </div>
+
+
+
+    {#// 模态框#}
+    <div id="modal1" class="modal bottom-sheet">
+        <div class="modal-content">
+            <table class="centered highlight responsive-table">
+                <thead>
+                <tr>
+                    <th data-field="food-name">菜品</th>
+                    <th data-field="num">数量</th>
+                    <th data-field="price">单价</th>
+                </tr>
+                </thead>
+                <tbody id="order-list">
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <a id="total-price" class="modal-action modal-close waves-effect waves-green btn-flat btn">0￥</a>
+        </div>
+    </div>
+
+{% endblock %}
+{% block script %}
+    <script src="/static/js/shop.js"></script>
+
+{% endblock %}

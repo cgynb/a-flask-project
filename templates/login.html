@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}登录{% endblock %}
+{% block body %}
+    <form action="{{ url_for('user.login') }}" method="post">
+        <div class="row">
+            <div class="center">
+                <i class="material-icons medium">account_circle</i>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12 m4 offset-m4">
+                <input id="username" type="text" class="validate" name="username">
+                <label for="username">用户名</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12 m4 offset-m4">
+                <input id="password" type="password" class="validate" name="password">
+                <label for="password">密码</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m4 offset-m4">
+                <button class="btn waves-effect waves-light right" type="submit" name="action">登录
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+{% block script %}
+
+{% endblock %}

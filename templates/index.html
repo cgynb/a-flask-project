@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}首页{% endblock %}
+{% block head %}
+    <style>
+        .merchant-img {
+            height: 15em;
+            width: auto;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <div class="row">
+        <form class="col s12">
+            <div class="row">
+                <div class="input-field col s12 m4 offset-m4">
+                    <i class="material-icons prefix">search</i>
+                    <input id="last_name" type="text" class="validate" name="keyword">
+                    <label for="last_name">搜索店名</label>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="slider">
+        <ul class="slides">
+            <li>
+                <img src="/static/images/1.jpg">
+                <div class="caption center-align">
+                    <h3>hhhhh</h3>
+                    <h5 class="light grey-text text-lighten-3">hhhh</h5>
+                </div>
+            </li>
+            <li>
+                <img src="/static/images/2.gif"> <!-- random image -->
+                <div class="caption left-align">
+                    <h3>左对齐标题</h3>
+                    <h5 class="/static/images/1.png">这是我们的小口号。</h5>
+                </div>
+            </li>
+            <li>
+                <img src="/static/images/3.gif"> <!-- random image -->
+                <div class="caption right-align">
+                    <h3>右对齐标题</h3>
+                    <h5 class="light grey-text text-lighten-3">这是我们的小口号。</h5>
+                </div>
+            </li>
+            <li>
+                <img src="/static/images/4.jpg"> <!-- random image -->
+                <div class="caption center-align">
+                    <h3>这是一个巨大的标签行</h3>
+                    <h5 class="light grey-text text-lighten-3">这是我们的小口号。</h5>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="row merchant-list">
+    </div>
+    <ul class="pagination center">
+
+    </ul>
+{% endblock %}
+{% block script %}
+    <script src="/static/js/index.js"></script>
+{% endblock %}

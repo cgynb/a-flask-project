@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+{% block title %}个人中心{% endblock %}
+{% block head %}
+    {{ dropzone.load_css() }}
+    {{ dropzone.style('border: 1px solid black; border-radius: 20px;text-align:center;') }}
+    {{ dropzone.load_js() }}
+    {{ dropzone.config(max_files=1, default_message='点击或者拖拽图片&#128527;') }}
+    <style>
+        .selfintroduce-display {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .rider-salary{
+            width: 5em !important;
+        }
+        .tabs .indicator {
+            background-color: #009688;
+        }
+        .tozan{
+            color: grey;
+        }
+        .zaned{
+            color: #009688;
+        }
+        .merchant-img{
+            width: auto;
+            height: 200px;
+        }
+        .merchant-introduce{
+            max-height: 4em;
+            overflow-y: auto;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <div class="row">
+        <div class="col s12 m12 l12">
+            <div class="card-panel grey lighten-5 z-depth-1 hoverable">
+                <div class="row valign-wrapper">
+                    <div class="col s2">
+                        <img class="avatar circle responsive-img" src=""
+                             onerror="this.src='{{ avatars.robohash(user.username) }}'">
+                        <p class="black-text display-username center"></p>
+                    </div>
+                    <div class="col s1 join-time">
+                        入住时间
+                    </div>
+                    <div class="col s2">已消费￥</div>
+                    <div class="col s7 selfintroduce-display"><b>个人介绍：</b></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="chips chips-initial"></div>
+    <div class="row">
+        <div class="col s12">
+            <ul class="tabs tabs-fixed-width">
+                <li class="tab col"><a class="teal-text active" href="#test1">查看订单</a></li>
+                <li class="tab col"><a class="teal-text" href="#test2">个人物品</a></li>
+                <li class="tab col"><a class="teal-text" href="#test3">关注店铺</a></li>
+                <li class="tab col"><a class="teal-text" href="#test4">更改信息</a></li>
+            </ul>
+        </div>
+        <div id="test1" class="col s12">
+            <div class="row">
+                <div class="col s12">
+                    <h5>当前订单</h5>
+                    <table class="striped responsive-table current-order">
+                        <thead>
+                        <tr>
+                            <th data-field="order_id">订单号</th>
+                            <th data-field="food_name">菜品</th>
+                            <th data-field="total_price">总价</th>
+                            <th data-field="merchant-take-order">商家接单</th>
+                            <th data-field="rider-take-order">骑手接单</th>
+                            <th data-field="connect">联系TA们</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12">
+                    <h5>历史订单</h5>
+                    <table class="striped  responsive-table history-order">
+                        <thead>
+                        <tr>
+                            <th data-field="order_id">订单号</th>
+                            <th data-field="order_date">下单时间</th>
+                            <th data-field="food_name">菜品</th>
+                            <th data-field="food_count">数量</th>
+                            <th data-field="price">单价</th>
+                            <th data-field="zan">点赞</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="test2" class="col s12">
+        <a href="/food/">上架食品</a>
+        <ul class="collapsible popout belong" data-collapsible="accordion">
+        </ul>
+    </div>
+    <div id="test3" class="col s12">
+        <div class="col s12 m7 fl">
+
+        </div>
+    </div>
+    <div id="test4" class="col s12">
+        <div class="row">
+            <div class="col s4">
+                <form action="/user/change_username/" method="post">
+                    <div class="input-field col s12">
+                        <input id="newusername" type="text" class="validate" name="newusername">
+                        <label for="newusername">更改用户名</label>
+                    </div>
+                    <button class="btn waves-effect waves-light" type="submit" name="action">更改用户名
+                    </button>
+                </form>
+            </div>
+            <div class="col s4">
+                <form action="/user/change_password/" method="post">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="password" type="password" class="validate" name="password">
+                            <label for="password">旧密码</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="newpassword" type="password" class="validate" name="newpassword">
+                            <label for="newpassword">新密码</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <button class="btn waves-effect waves-light" type="submit" name="action">更改密码
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="col s4">
+                {{ dropzone.create(action=url_for('user.upload_avatar')) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <textarea id="textarea1" class="materialize-textarea"></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <a class="waves-effect waves-teal btn-flat keep-introduce right">点击保存</a>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block script %}
+    <script src="/static/js/homepage.js"></script>
+{% endblock %}

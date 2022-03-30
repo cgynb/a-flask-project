@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/materialize.min.css">
+    <link rel="shortcut icon" href="/static/images/favicon.ico">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% block head %}{% endblock %}
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body class="grey lighten-3">
+<script src="/static/js/jquery-3.6.0.js"></script>
+<script src="/static/js/materialize.min.js"></script>
+{#// 导航条下拉菜单#}
+<ul id="dropdown1" class="dropdown-content">
+    <li><a href="{{ url_for('user.homepage') }}">查看订单</a></li>
+  <li><a href="{{ url_for('user.homepage') }}#test3">收藏店铺</a></li>
+  <li><a href="{{ url_for('food.upload_food') }}">上架食品</a></li>
+    <li><a href="{{ url_for('user.chatlist') }}">聊天列表</a></li>
+</ul>
+{#// 导航条#}
+  <nav>
+    <div class="nav-wrapper teal">
+      <a href="{{ url_for('food.index') }}" class="brand-logo center">帅团外卖</a>
+      <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+      <ul class="right hide-on-med-and-down">
+          {% if user %}
+            <li><a href="{{ url_for('user.homepage') }}">个人中心</a></li>
+            <li><a href="{{ url_for('user.logout') }}">退出登录</a></li>
+          {% else %}
+            <li><a href="{{ url_for('user.register') }}">注册</a></li>
+            <li><a href="{{ url_for('user.login') }}">登录</a></li>
+          {% endif %}
+          <li><a class="dropdown-button" href="#!" data-activates="dropdown1"><i class="material-icons right">arrow_drop_down</i></a></li>
+      </ul>
+      <ul class="side-nav" id="mobile-demo">
+          {% if user %}
+              <li><a href="{{ url_for('user.homepage') }}">个人中心</a></li>
+              <li><a href="{{ url_for('user.chatlist') }}">聊天列表</a></li>
+              <li><a href="{{ url_for('user.logout') }}">退出登录</a></li>
+          {% else %}
+              <li><a href="{{ url_for('user.login') }}">登录</a></li>
+              <li><a href="{{ url_for('user.register') }}">注册</a></li>
+          {% endif %}
+      </ul>
+    </div>
+  </nav>
+
+<div class="container">
+    {% block body %}{% endblock %}
+</div>
+</body>
+{% for message in get_flashed_messages() %}
+    <script>Materialize.toast('{{ message }}', 4000)</script>
+{% endfor %}
+{% block script %}{% endblock %}
+<script>
+      $(".button-collapse").sideNav();
+</script>
+</html>
