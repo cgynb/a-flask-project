@@ -1,31 +1,31 @@
-{% extends "base.html" %}
-{% block title %}上传菜品{% endblock %}
-{% block head %}
-{% endblock %}
+{% extends 'base.html' %}
+
+{% block title %}上架食品{% endblock %}
+
 {% block body %}
-<div class="row" style="margin-top: 3em">
-    <div class="col"></div>
-    <div class="col-6">
-        <form action="{{ url_for('food.upload_food') }}" method="post">
-            <div class="form-group">
-                <input type="text" name="food_name" class="form-control" placeholder="请输入食物名称">
-            </div>
-            <div class="form-group">
-                <input type="text" name="food_price" class="form-control" placeholder="请输入食物价格">
-            </div>
-            <div class="form-group">
-                <textarea class="form-control" cols="30" rows="10" name="food_desc" placeholder="请输入食物的描述"></textarea>
-            </div>
-            {% for message in get_flashed_messages() %}
-                <div class="form-group">
-                    <div class="text-danger">{{ message }}</div>
+    <div class="row">
+        <div class="col s12 m8 offset-m2">
+            <form action="{{ url_for('food.upload_food') }}" method="post">
+                <div class="row">
+                    <div class="input-field col s12 m6">
+                        <input id="foodname" type="text" class="validate" name="foodname">
+                        <label for="foodname">食品名称</label>
+                    </div>
+                    <div class="input-field col s12 m6">
+                        <input id="price" type="text" class="validate" name="foodprice">
+                        <label for="price">定价</label>
+                    </div>
                 </div>
-            {% endfor %}
-            <div class="form-group">
-                <button class="btn btn-primary">发布</button>
-            </div>
-        </form>
+                <div class="row">
+                    <div class="input-field col s12 m12">
+                        <textarea id="icon_prefix2" class="materialize-textarea" name="fooddesc"></textarea>
+                        <label for="icon_prefix2">食物详情</label>
+                    </div>
+                </div>
+                <button class="btn waves-effect waves-light right" type="submit" name="action">提交
+                    <i class="material-icons right">send</i>
+                </button>
+            </form>
+        </div>
     </div>
-    <div class="col"></div>
-</div>
 {% endblock %}

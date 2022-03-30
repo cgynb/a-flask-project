@@ -1,27 +1,24 @@
 from flask import Flask, session, g
-from flask_migrate import Migrate
-
-import config
+from blueprints import food_bp, user_bp, apis_bp, chat_bp
 from exts import db, mail, avatars, dropzone, socketio
-
-from blueprints import user_bp, food_bp, admin_bp, chat_bp
-
-from models import UserModel, MerchantsModel
+from flask_migrate import Migrate
+import config
+from models import UserModel
 
 app = Flask(__name__)
+
 app.config.from_object(config)
+
+app.register_blueprint(food_bp)
+app.register_blueprint(user_bp)
+app.register_blueprint(apis_bp)
+app.register_blueprint(chat_bp)
 
 db.init_app(app)
 mail.init_app(app)
 avatars.init_app(app)
 dropzone.init_app(app)
 socketio.init_app(app)
-
-app.register_blueprint(food_bp)
-app.register_blueprint(user_bp)
-app.register_blueprint(admin_bp)
-app.register_blueprint(chat_bp)
-
 migrate = Migrate(app, db)
 
 
@@ -31,32 +28,26 @@ def before_request():
     if user_id:
         try:
             user = UserModel.query.get(user_id)
-            # 给g绑定一个叫做user的变量，他的值是user这个变量
-            # setattr(g, 'user', user)  可以这样写
             g.user = user
-            if user.role_id == 1:
+            if user.role == 1:
                 g.role = '顾客'
-            elif user.role_id == 2:
+            elif user.role == 2:
                 g.role = '商家'
-            elif user.role_id == 3:
+            elif user.role == 3:
                 g.role = '骑手'
-            elif user.role_id == 4:
+            elif user.role == 4:
                 g.role = '管理员'
             else:
                 g.role = None
-        except:
+        except Exception as e:
+            print(e)
             g.user = None
 
 
 @app.context_processor
 def context_processor():
     if hasattr(g, 'user'):
-        if g.role == '商家':
-            merchant = MerchantsModel.query.filter(MerchantsModel.email == g.user.email).first()
-            label = merchant.label
-            return {'user': g.user, 'role': g.role, 'label': label}
-        else:
-            return {'user': g.user, 'role': g.role}
+        return {'user': g.user}
     else:
         return {}
 

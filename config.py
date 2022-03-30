@@ -6,9 +6,9 @@ USERNAME = 'root'
 PASSWORD = '123456'
 HOST = '127.0.0.1'
 PORT = '3306'
-DATABASE = 'platform'
+DATABASE = 'elebu'
 
-SQLALCHEMY_DATABASE_URI = "mysql+pymysql://{}:{}@{}:{}/{}?charset=utf8".format(USERNAME, PASSWORD, HOST, PORT, DATABASE)
+SQLALCHEMY_DATABASE_URI = "mysql+pymysql://{}:{}@{}:{}/{}?charset=utf8mb4".format(USERNAME, PASSWORD, HOST, PORT, DATABASE)
 
 
 # 便于调试
@@ -25,6 +25,6 @@ MAIL_PORT = 465
 MAIL_USE_TLS = False
 MAIL_USE_SSL = True
 MAIL_DEBUG = True
-MAIL_USERNAME = ''
-MAIL_PASSWORD = ''
-MAIL_DEFAULT_SENDER = ''
+MAIL_USERNAME = '948628463@qq.com'
+MAIL_PASSWORD = 'pmptyvvgfqtmbbja'
+MAIL_DEFAULT_SENDER = '948628463@qq.com'

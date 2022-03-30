@@ -7,7 +7,6 @@ class EmailCaptchaModel(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String(100), nullable=False, unique=True)
     captcha = db.Column(db.String(100), nullable=False)
-    create_time = db.Column(db.DateTime, default=datetime.now)
 
 
 class UserModel(db.Model):
@@ -17,14 +16,17 @@ class UserModel(db.Model):
     email = db.Column(db.String(100), nullable=False, unique=True)
     password = db.Column(db.String(200), nullable=False)
     # 1:顾客  2:商家  3:骑手
-    role_id = db.Column(db.Integer)
+    role = db.Column(db.Integer)
     join_time = db.Column(db.DateTime, default=datetime.now)
+    selfintroduce = db.Column(db.Text)
+    avatar = db.Column(db.String(30))
 
 
-class MerchantsModel(db.Model):
-    __tablename__ = 'merchant'
-    email = db.Column(db.String(100), db.ForeignKey("user.email"), primary_key=True)
-    label = db.Column(db.String(30))
+class TagModel(db.Model):
+    __tablename__ = 'tag'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    t = db.Column(db.String(500))
 
 
 class FoodModel(db.Model):
@@ -36,8 +38,8 @@ class FoodModel(db.Model):
     food_name = db.Column(db.String(50))
     food_desc = db.Column(db.Text)
     zans = db.Column(db.Integer, default=0)
-    collects = db.Column(db.Integer, default=0)
     order_number = db.Column(db.Integer, default=0)
+    address = db.Column(db.String(30))
 
 
 class OrderModel(db.Model):
@@ -49,11 +51,13 @@ class OrderModel(db.Model):
     merchant_take_order = db.Column(db.Boolean, default=False)
     rider_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     food_id = db.Column(db.Integer)
-    food_price = db.Column(db.Integer, nullable=False)
+    food_price = db.Column(db.Float, nullable=False)
     food_name = db.Column(db.String(50))
-    rider_salary = db.Column(db.Integer, nullable=False)
+    food_count = db.Column(db.Integer)
+    rider_salary = db.Column(db.Float)
     zan = db.Column(db.Boolean, default=False)
     order_date = db.Column(db.DateTime, default=datetime.now)
+    order_id = db.Column(db.String(30), nullable=False)
 
 
 class CollectModel(db.Model):
@@ -73,7 +77,26 @@ class FollowModel(db.Model):
 class CommentModel(db.Model):
     __tablename__ = 'comment'
     id = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True)
-    food_id = db.Column(db.Integer, db.ForeignKey('food.id'))
-    author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    merchant_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     comment = db.Column(db.Text)
-    create_time = db.Column(db.DateTime, default=datetime.now)
+
+
+class SubcommentModel(db.Model):
+    __tablename__ = 'subcomment'
+    id = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True)
+    sub = db.Column(db.Integer, db.ForeignKey('comment.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    comment = db.Column(db.Text)
+
+
+class MessageModel(db.Model):
+    __tablename__ = 'message'
+    id = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True)
+    message = db.Column(db.Text)
+    room = db.Column(db.String(30))
+    send_msg_user = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user2 = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user3 = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user2_read = db.Column(db.Boolean, default=False)
+    user3_read = db.Column(db.Boolean, default=False)

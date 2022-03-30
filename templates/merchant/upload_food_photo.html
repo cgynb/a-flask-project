@@ -1,17 +1,66 @@
-{% extends "base.html" %}
-{% block title %}上传菜品{% endblock %}
+{% extends 'base.html' %}
+
+{% block title %}上传食品图片{% endblock %}
 {% block head %}
-    {{ dropzone.load_css() }}
-    {{ dropzone.style('border: 10px solid black; border-radius: 20px; width: 540px; text-align:center;') }}
-    {{ dropzone.load_js() }}
-    {{ dropzone.config(max_files=1, default_message='只能上传一张图片哦!') }}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dropzone@5.2.0/dist/min/dropzone.min.css" type="text/css">
+
+    <style>
+        .dropzone {
+            padding: 3em;
+            margin: 3em;
+            border: 1px solid black;
+            border-radius: 20px;
+            text-align: center;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/dropzone@5.2.0/dist/dropzone.min.js"></script>
+
+    <script>
+        Dropzone.options.myDropzone = {
+            init: function () {
+                // redirect after queue complete
+                // upload queue when button click
+                // custom init code
+            },
+            // click upload options
+            uploadMultiple: false,
+            parallelUploads: 2,
+            paramName: "file", // The name that will be used to transfer the file
+            maxFilesize: 3, // MB
+            acceptedFiles: "image/*, audio/*, video/*, text/*, application/*",
+            maxFiles: 1,
+            dictDefaultMessage: `点击或者拖拽图片&#128527;`, // message display on drop area
+            dictFallbackMessage: "Your browser does not support drag'n'drop file uploads.",
+            dictInvalidFileType: "You can't upload files of this type.",
+            dictFileTooBig: "File is too big {{filesize}}. Max filesize: {{maxFilesize}}MiB.",
+            dictResponseError: "Server error: {{statusCode}}",
+            dictMaxFilesExceeded: "You can't upload any more files.",
+            dictCancelUpload: "Cancel upload",
+            dictRemoveFile: "Remove file",
+            dictCancelUploadConfirmation: "You really want to delete this file?",
+            dictUploadCanceled: "Upload canceled",
+            // custom options code
+        };
+        function getQueryVariable(variable) {
+            var query = window.location.search.substring(1);
+            var vars = query.split("&");
+            for (var i = 0; i < vars.length; i++) {
+                var pair = vars[i].split("=");
+                if (pair[0] == variable) {
+                    return pair[1];
+                }
+            }
+            return (false);
+        }
+    </script>
 {% endblock %}
 {% block body %}
-        <div class="row">
-        <div class="col"></div>
-        <div class="col-6" style="margin: 17em">
-            {{ dropzone.create(action=url_for('user.upload_food_photo')) }}
-        </div>
-        <div class="col"></div>
-    </div>
+    <form action="/user/food_photo/" method="post" class="dropzone" id="myDropzone" enctype="multipart/form-data">
+        <input type="hidden" name="food_id" >
+    </form>
+{% endblock %}
+{% block script %}
+<script>
+    $('.dropzone input').attr('value', getQueryVariable('food_id'))
+</script>
 {% endblock %}

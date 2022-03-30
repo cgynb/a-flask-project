@@ -1,27 +1,23 @@
-from flask import g
 import wtforms
 from wtforms.validators import length, email, EqualTo
-
 from models import EmailCaptchaModel, UserModel
 from werkzeug.security import check_password_hash
-
-
-class LoginForm(wtforms.Form):
-    email = wtforms.StringField(validators=[email()])
-    password = wtforms.StringField(validators=[length(min=6, max=20)])
+from flask import g
 
 
 class RegisterForm(wtforms.Form):
     username = wtforms.StringField(validators=[length(min=3, max=20)])
     email = wtforms.StringField(validators=[email()])
     password = wtforms.StringField(validators=[length(min=6, max=20)])
-    password_confirm = wtforms.StringField(validators=[EqualTo("password")])
-    role_id = wtforms.StringField(validators=[length(min=1, max=1)])
+    confirm = wtforms.StringField(validators=[EqualTo("password")])
+    captcha = wtforms.StringField(validators=[length(min=4, max=4)])
+    role = wtforms.StringField(validators=[length(min=1, max=1)])
 
     def validate_captcha(self, field):
         captcha = field.data
         email = self.email.data
         captcha_model = EmailCaptchaModel.query.filter_by(email=email).first()
+        print(captcha_model.email, captcha, captcha_model.captcha)
         if (not captcha_model) or (captcha_model.captcha.lower() != captcha.lower()):
             raise wtforms.ValidationError('邮箱验证错误！')
 
@@ -32,26 +28,35 @@ class RegisterForm(wtforms.Form):
             raise wtforms.ValidationError('邮箱已经存在！')
 
     def validate_role_id(self, field):
-        role_id = field.data
-        if role_id not in ('1', '2', '3'):
+        role = field.data
+        if role not in ('1', '2', '3'):
             raise wtforms.ValidationError('职业选择错误')
 
 
-class FoodForm(wtforms.Form):
-    food_name = wtforms.StringField(validators=[length(min=1, max=200)])
-    food_price = wtforms.StringField(validators=[length(min=1, max=6)])
-    food_desc = wtforms.TextAreaField(validators=[length(min=5)])
+class LoginForm(wtforms.Form):
+    username = wtforms.StringField(validators=[length(min=3, max=20)])
+    password = wtforms.StringField(validators=[length(min=6, max=20)])
 
-    def validate_food_price(self, field):
-        food_price = field.data
-        if int(food_price) not in range(0, 100000):
-            raise wtforms.ValidationError('价格不对')
+    def validate_password(self, field):
+        password = field.data
+        user = UserModel.query.filter(UserModel.username == self.username.data).first()
+        if user:
+            right_password = user.password
+        else:
+            raise wtforms.ValidationError('无此用户')
+        if not check_password_hash(right_password, password):
+            raise wtforms.ValidationError('密码不对')
 
 
-class ChangePassForm(wtforms.Form):
-    old_password = wtforms.StringField(validators=[length(min=6, max=20)])
-    new_password = wtforms.StringField(validators=[length(min=6, max=20)])
-    def validate_old_password(self, field):
+class NewUserNameForm(wtforms.Form):
+    newusername = wtforms.StringField(validators=[length(min=3, max=20)])
+
+
+class NewPasswordForm(wtforms.Form):
+    password = wtforms.StringField(validators=[length(min=6, max=20)])
+    newpassword = wtforms.StringField(validators=[length(min=6, max=20)])
+
+    def validate_password(self, field):
         password = field.data
         if not check_password_hash(g.user.password, password):
             raise wtforms.ValidationError('原密码不对')

@@ -2,6 +2,31 @@
   <profile version="1.0">
     <option name="myName" value="Project Default" />
     <inspection_tool class="Eslint" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <value>
+          <list size="17">
+            <item index="0" class="java.lang.String" itemvalue="dnspython" />
+            <item index="1" class="java.lang.String" itemvalue="six" />
+            <item index="2" class="java.lang.String" itemvalue="Werkzeug" />
+            <item index="3" class="java.lang.String" itemvalue="python-engineio" />
+            <item index="4" class="java.lang.String" itemvalue="cffi" />
+            <item index="5" class="java.lang.String" itemvalue="zope.interface" />
+            <item index="6" class="java.lang.String" itemvalue="MarkupSafe" />
+            <item index="7" class="java.lang.String" itemvalue="pycparser" />
+            <item index="8" class="java.lang.String" itemvalue="bidict" />
+            <item index="9" class="java.lang.String" itemvalue="click" />
+            <item index="10" class="java.lang.String" itemvalue="Jinja2" />
+            <item index="11" class="java.lang.String" itemvalue="python-socketio" />
+            <item index="12" class="java.lang.String" itemvalue="eventlet" />
+            <item index="13" class="java.lang.String" itemvalue="Flask-SocketIO" />
+            <item index="14" class="java.lang.String" itemvalue="itsdangerous" />
+            <item index="15" class="java.lang.String" itemvalue="zope.event" />
+            <item index="16" class="java.lang.String" itemvalue="Flask" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
     <inspection_tool class="PyPep8NamingInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
       <option name="ignoredErrors">
         <list>

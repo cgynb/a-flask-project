@@ -1,81 +1,63 @@
 {% extends 'base.html' %}
 {% block title %}首页{% endblock %}
-{% block head %}{% endblock %}
+{% block head %}
+    <style>
+        .merchant-img {
+            height: 15em;
+            width: auto;
+        }
+    </style>
+{% endblock %}
 {% block body %}
-    <h3 style="margin: 2em">人气菜品：</h3>
-<div class="row">
-    {% for i in range(info_num) %}
-    <div class="col">
-        <div class="card" style="width: 18rem;">
-          <img style="height: 15em" src={{ url_for('static', filename="images/food/{}/{}.png".format(foods[i].id, foods[i].id))}}  class="card-img-top" alt="好吃的" onerror="this.src='https://bpic.588ku.com/art_water_pic/19/04/08/8e7fc58748b4bdcc865218b3e9e1f774.jpg'"/>
-          <div class="card-body">
-            <h5 class="card-title">{{ foods[i].food_name }}</h5>
-            <p class="card-text">{{ foods[i].username }}</p>
-            <a href="{{ url_for('food.food_details') }}?id={{ foods[i].id }}" class="btn btn-primary">查看详情</a>
-              <p class="card-text"><small class="text-muted">已送出{{ foods[i].order_number }}份，收获{{ foods[i].zans }}个赞！！</small></p>
-              <p class="card-text"><small class="text-muted"></small></p>
-          </div>
-        </div>
+    <div class="row">
+        <form class="col s12">
+            <div class="row">
+                <div class="input-field col s12 m4 offset-m4">
+                    <i class="material-icons prefix">search</i>
+                    <input id="last_name" type="text" class="validate" name="keyword">
+                    <label for="last_name">搜索店名</label>
+                </div>
+            </div>
+        </form>
     </div>
-    {% endfor %}
-    {% if info_num % 3 != 0 %}
-        {% for i in range(3 - info_num % 3) %}
-            <div class="col"></div>
-        {% endfor %}
-    {% endif %}
-</div>
+    <div class="slider">
+        <ul class="slides">
+            <li>
+                <img src="/static/images/1.jpg">
+                <div class="caption center-align">
+                    <h3>hhhhh</h3>
+                    <h5 class="light grey-text text-lighten-3">hhhh</h5>
+                </div>
+            </li>
+            <li>
+                <img src="/static/images/2.gif"> <!-- random image -->
+                <div class="caption left-align">
+                    <h3>左对齐标题</h3>
+                    <h5 class="/static/images/1.png">这是我们的小口号。</h5>
+                </div>
+            </li>
+            <li>
+                <img src="/static/images/3.gif"> <!-- random image -->
+                <div class="caption right-align">
+                    <h3>右对齐标题</h3>
+                    <h5 class="light grey-text text-lighten-3">这是我们的小口号。</h5>
+                </div>
+            </li>
+            <li>
+                <img src="/static/images/4.jpg"> <!-- random image -->
+                <div class="caption center-align">
+                    <h3>这是一个巨大的标签行</h3>
+                    <h5 class="light grey-text text-lighten-3">这是我们的小口号。</h5>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="row merchant-list">
+    </div>
+    <ul class="pagination center">
 
-{#别看底下这么多代码，只是一个分页条#}
-<div class="row">
-    <div class="col"></div>
-    <div class="col">
-        <nav aria-label="Page navigation example">
-            <ul class="pagination">
-                <li class="page-item">
-                    <a class="page-link" href="/?page={{ current_page - 1 }}&keyword={{ keyword }}&total_page={{ total_page }}" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-                {% if total_page <= 5 %}
-                    {% for p in range(total_page) %}
-                        <li class="page-item"><a class="page-link" href="/?page={{ p + 1 }}&keyword={{ keyword }}&total_page={{ total_page }}">{{ p + 1 }}</a></li>
-                    {% endfor %}
-                {% else %}
-                    {% if 1 < current_page < total_page %}
-                        <li class="page-item"><a class="page-link" href="/?page=1&keyword={{ keyword }}&total_page={{ total_page }}">1</a></li>
-                        <li class="page-item disabled"><a class="page-link" href="">...</a></li>
-                        <li class="page-item"><a class="page-link"
-                                                 href="/?page={{ current_page - 1 }}&keyword={{ keyword }}&total_page={{ total_page }}">{{ current_page - 1 }}</a></li>
-                        <li class="page-item"><a class="page-link"
-                                                 href="/?page={{ current_page }}&keyword={{ keyword }}&total_page={{ total_page }}">{{ current_page }}</a></li>
-                        <li class="page-item"><a class="page-link"
-                                                 href="/?page={{ current_page + 1 }}&keyword={{ keyword }}&total_page={{ total_page }}">{{ current_page + 1 }}</a></li>
-                        <li class="page-item disabled"><a class="page-link" href="">...</a></li>
-                        <li class="page-item"><a class="page-link" href="/?page={{ total_page }}&keyword={{ keyword }}&total_page={{ total_page }}">{{ total_page }}</a>
-                        </li>
-                    {% elif current_page == 1 %}
-                        <li class="page-item"><a class="page-link" href="/?page=1&keyword={{ keyword }}&total_page={{ total_page }}">1</a></li>
-                        <li class="page-item disabled"><a class="page-link" href="">...</a></li>
-                        <li class="page-item"><a class="page-link"
-                                                 href="/?page={{ total_page - 1 }}&keyword={{ keyword }}&total_page={{ total_page }}">{{ total_page - 1 }}</a></li>
-                        <li class="page-item"><a class="page-link" href="/?page={{ total_page }}&keyword={{ keyword }}&total_page={{ total_page }}">{{ total_page }}</a>
-                        </li>
-                    {% elif current_page == total_page %}
-                        <li class="page-item"><a class="page-link" href="/?page=1&keyword={{ keyword }}&total_page={{ total_page }}">1</a></li>
-                        <li class="page-item"><a class="page-link" href="/?page=2&keyword={{ keyword }}&total_page={{ total_page }}">2</a></li>
-                        <li class="page-item disabled"><a class="page-link" href="">...</a></li>
-                        <li class="page-item"><a class="page-link" href="/?page={{ total_page }}&keyword={{ keyword }}&total_page={{ total_page }}">{{ total_page }}</a>
-                        </li>
-                    {% endif %}
-                {% endif %}
-                <li class="page-item">
-                    <a class="page-link" href="/?page={{ current_page + 1 }}&keyword={{ keyword }}&total_page={{ total_page }}" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </div>
-    <div class="col"></div>
-</div>
-{% endblock body %}
+    </ul>
+{% endblock %}
+{% block script %}
+    <script src="/static/js/index.js"></script>
+{% endblock %}
