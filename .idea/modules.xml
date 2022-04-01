@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/Wsl.iml" filepath="$PROJECT_DIR$/.idea/Wsl.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/guichatroom.iml" filepath="$PROJECT_DIR$/.idea/guichatroom.iml" />
     </modules>
   </component>
 </project>
