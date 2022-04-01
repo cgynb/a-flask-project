@@ -38,7 +38,13 @@ def disconnect(sid):
 
 @sio.on('msg')
 def msg(sid, data):
-    sio.emit('msg', data)
+    print(data)
+    if data['action'] == 'logout':
+        name_list.remove(data['username'])
+        data['name_list'] = name_list
+        sio.emit('msg', data)
+    else:
+        sio.emit('msg', data)
 
 
 if __name__ == '__main__':

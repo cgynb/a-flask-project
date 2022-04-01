@@ -1,4 +1,5 @@
 import ttkbootstrap
+from ttkbootstrap.toast import ToastNotification
 import threading
 import socketio
 
@@ -17,6 +18,15 @@ def disconnect():
     pass
 
 
+def flash_msg(title, message):
+    toast = ToastNotification(
+        title=title,
+        message=message,
+        duration=4000,
+    )
+    toast.show_toast()
+
+
 @sio.on('msg')
 def handle_msg(data):
     if data['action'] == 'login':
@@ -26,8 +36,16 @@ def handle_msg(data):
             for name in data['name_list']:
                 w.add_user(name)
         else:
+            flash_msg("有新用户加入了聊天", '欢迎' + data['username'])
             w.add_user(data['username'])
+    elif data['action'] == 'logout':
+        w.user_list.delete('1.0', 'end')
+        w.user_list.insert('end', '在线用户：')
+        for name in data['name_list']:
+            w.add_user(name)
     else:
+        if data['username'] != w.username:
+            flash_msg("有新消息", data['username'] + ':' + data['msg'])
         w.show_msg(data['username'], data['msg'])
 
 
@@ -89,6 +107,7 @@ class ChatWindow:
 
     # 关闭窗口的同时，断开连接
     def on_closing(self):
+        sio.emit('msg', {'action': 'logout', 'username': self.username})
         self.window.destroy()
         sio.disconnect()
 
