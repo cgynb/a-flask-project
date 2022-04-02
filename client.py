@@ -147,6 +147,7 @@ class ChatWindow:
         if ret == '确定':
             self.window.destroy()
             sio.disconnect()
+            return
         elif ret == '取消':
             return
 
