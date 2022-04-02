@@ -1,8 +1,14 @@
 import socketio
 import eventlet.wsgi
 import random
-
+import socket
+import logging
 name_list = []
+
+hostname = socket.gethostname()
+ip = socket.gethostbyname(hostname)
+logging.basicConfig()
+logging.warning('        服务器ip：     ' + ip)
 
 
 def create_username(sid):
