@@ -27,7 +27,7 @@ app = socketio.WSGIApp(sio)
 def connect(sid, environ, auth):
     data = {'username': create_username(), 'action': 'login', 'name_list': name_list}
     sio.emit('msg', data)
-    # print('connect ', sid)
+    print('connect ', sid)
 
 
 @sio.event
