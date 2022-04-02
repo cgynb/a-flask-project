@@ -5,6 +5,18 @@ from ttkbootstrap.dialogs.dialogs import Messagebox
 import threading
 import socketio
 import time
+import random
+
+Light_theme_list = ['cosmo', 'flatly', 'journal', 'litera', 'lumen', 'minty', 'pulse', 'sandstone',
+                    'united', 'yeti', 'morph', 'simplex', 'cerculean']
+Dark_theme_list = ['solar', 'superhero', 'darkly', 'cyborg', 'vapor']
+theme_list = Light_theme_list + Dark_theme_list
+
+
+def random_theme():
+    i = random.randint(0, len(theme_list)-1)
+    return theme_list[i]
+
 
 sio = socketio.Client()
 
@@ -59,7 +71,7 @@ class ChatWindow:
         self.username = None
         self.ip = ''
         # 窗口设置
-        self.window = ttkbootstrap.Style(theme='lumen').master
+        self.window = ttkbootstrap.Style(theme=random_theme()).master
         self.window.title('聊天室')
         ws = self.window.winfo_screenwidth()
         hs = self.window.winfo_screenheight()
