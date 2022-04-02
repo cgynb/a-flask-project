@@ -1,5 +1,6 @@
 import ttkbootstrap
 from ttkbootstrap.toast import ToastNotification
+from ttkbootstrap.scrolled import ScrolledText
 from ttkbootstrap.dialogs.dialogs import Messagebox
 import threading
 import socketio
@@ -83,11 +84,13 @@ class ChatWindow:
         self.b.place(height=90, width=90, x=670, y=470)
 
         # 会话框
-        self.msg_box = ttkbootstrap.ScrolledText(self.window, width=100, height=22)
+        self.msg_box = ScrolledText(self.window, width=100, height=22)
+        self.msg_box.autohide_scrollbar()
         self.msg_box.place(x=30, y=60)
 
         # 用户列表
-        self.user_list = ttkbootstrap.ScrolledText(self.window, width=24, height=33)
+        self.user_list = ScrolledText(self.window, width=24, height=33)
+        self.user_list.autohide_scrollbar()
         self.user_list.place(x=780, y=0)
         self.user_list.insert('end', '在线用户：')
 
@@ -120,7 +123,8 @@ class ChatWindow:
 
     def show_msg(self, username, message):
         if message:
-            self.msg_box.insert('end', '\n' + username + ':' + '\n' + message)
+            self.msg_box.insert('end', '\n' + username + ':' + '\n   ' + message)
+            self.msg_box.text.yview_moveto(1)
             self.e.delete('0.0', 'end')
 
     def add_user(self, username):
