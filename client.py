@@ -3,6 +3,7 @@ from ttkbootstrap.toast import ToastNotification
 from ttkbootstrap.scrolled import ScrolledText
 from ttkbootstrap.dialogs.dialogs import Messagebox
 from ttkbootstrap.widgets import Button, Entry
+from ttkbootstrap.icons import Emoji
 import threading
 import socketio
 import time
@@ -56,7 +57,6 @@ def handle_msg(data):
             flash_msg("有新用户加入了聊天", '欢迎' + data['username'])
             w.add_user(data['username'])
     elif data['action'] == 'logout':
-        print(data['name_list'])
         w.user_list.delete('1.0', 'end')
         w.user_list.insert('end', '在线用户：')
         for name, sid in data['name_list']:
@@ -86,7 +86,7 @@ class ChatWindow:
         # 标题设置
         self.label_var = ttkbootstrap.StringVar()
         self.title = ttkbootstrap.Label(self.window, textvariable=self.label_var,
-                                        font=('Arial', 17), background='#f4f4f4')
+                                        font=('Arial', 17), background='#bdbdbd')
         self.title.place(width=800, height=60, x=0, y=0)
         self.label_var.set(' ' * 50 + '匿名聊天室')
 
@@ -96,7 +96,7 @@ class ChatWindow:
         self.e.bind('<Return>', self.post_msg)
 
         # 发送消息按钮
-        self.b = Button(self.window, text='发送', command=self.post_msg)
+        self.b = Button(self.window, bootstyle='light-link', text='发送', command=self.post_msg)
         self.b.place(height=90, width=90, x=670, y=470)
 
         # 会话框
@@ -114,20 +114,23 @@ class ChatWindow:
         self.ipwin = ttkbootstrap.Toplevel(self.window)
         self.ipwin.title('连接服务器')
         self.ipwin.geometry('400x80')
+        # ip输入框
         self.inp_var = ttkbootstrap.StringVar()
-        self.ininp = Entry(self.ipwin, textvariable=self.inp_var)
-        self.ipconfirm = Button(self.ipwin, bootstyle='outline', text='确认', command=self.get_ip)
-        self.ininp.pack()
-        self.ipconfirm.pack()
+        self.ipinp = Entry(self.ipwin, textvariable=self.inp_var)
+        self.ipinp.pack()
+        self.ipinp.bind('<Return>', self.get_ip)
         self.inp_var.set('请输入要连接服务器的ip')
-        self.ininp.bind('<Button-1>', lambda e: self.inp_var.set(''))
+        self.ipinp.bind('<Button-1>', lambda e: self.inp_var.set(''))
+        # 输入确定按钮
+        self.ipconfirm = Button(self.ipwin, bootstyle='outline', text='确认', command=self.get_ip)
+        self.ipconfirm.pack()
 
         # 设置关闭窗口事件
         self.window.protocol("WM_DELETE_WINDOW", self.on_closing)
         self.ipwin.protocol("WM_DELETE_WINDOW", self.force_close)
 
-    def get_ip(self):
-        self.ip = self.ininp.get()
+    def get_ip(self, event=None):
+        self.ip = self.ipinp.get()
         self.ipwin.destroy()
 
     def post_msg(self, event=None):
@@ -164,7 +167,8 @@ class ChatWindow:
 
     # 关闭窗口的同时，断开连接
     def on_closing(self):
-        ret = Messagebox.okcancel('关咯', title='提示')
+        face = Emoji.get('FACE WITH PLEADING EYES').char
+        ret = Messagebox.okcancel('你确定要关闭吗' + face, title='确认关闭')
         if ret == '确定':
             self.window.destroy()
             sio.disconnect()
