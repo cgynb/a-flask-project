@@ -2,17 +2,26 @@ import ttkbootstrap
 from ttkbootstrap.toast import ToastNotification
 from ttkbootstrap.scrolled import ScrolledText
 from ttkbootstrap.dialogs.dialogs import Messagebox
-from ttkbootstrap.widgets import Button, Entry
-from ttkbootstrap.icons import Emoji
+from ttkbootstrap.widgets import Button, Entry, Radiobutton
 import threading
 import socketio
 import time
 import random
 import sys
 
+emoji_list = ['🐻', '🗿', '🙃', '😊', '🥲',
+              '🥰', '🤬', '🥶', '🥵', '😳',
+              '🤮', '🤩', '🤓', '😝', '🌚',
+              '🙈', '🤪', '🏩', '🚸','🤺',
+              '🚾', '🉑', '🉐', '㊙', '🈶',
+              '🈚', '🆘', '🆗', '🪙', '🤟',
+              '👊', '😭', '🙏', '🙌', '🦓',
+              '🦜', '🦄', '🎃', '✔', '™']
+
 Light_theme_list = ['cosmo', 'flatly', 'journal', 'litera', 'lumen', 'minty', 'pulse', 'sandstone',
                     'united', 'yeti', 'morph', 'simplex', 'cerculean']
 Dark_theme_list = ['solar', 'superhero', 'darkly', 'cyborg', 'vapor']
+
 theme_list = Light_theme_list + Dark_theme_list
 
 
@@ -105,10 +114,16 @@ class ChatWindow:
         self.msg_box.place(x=30, y=60)
 
         # 用户列表
-        self.user_list = ScrolledText(self.window, width=24, height=33)
+        self.user_list = ScrolledText(self.window, width=24, height=15)
         self.user_list.autohide_scrollbar()
         self.user_list.place(x=780, y=0)
         self.user_list.insert('end', '在线用户：')
+
+        # 表情设置
+        self.frame = ttkbootstrap.Frame(self.window)
+        self.emoji_var = ttkbootstrap.StringVar()
+        self.frame.place(x=780, y=300)
+        self.show_emoji_list()
 
         # 输入ip
         self.ipwin = ttkbootstrap.Toplevel(self.window)
@@ -132,6 +147,21 @@ class ChatWindow:
     def get_ip(self, event=None):
         self.ip = self.ipinp.get()
         self.ipwin.destroy()
+
+    def show_emoji_list(self):
+        row = 1
+        col = 1
+        for e in emoji_list:
+            btn = Radiobutton(self.frame, bootstyle='dark-outline-toolbutton', variable=self.emoji_var, value=e,
+                              text=e, command=lambda: self.add_emoji(self.emoji_var.get()))
+            btn.grid(row=row, column=col, sticky='nsew')
+            col += 1
+            if col == 6:
+                row += 1
+                col = 1
+
+    def add_emoji(self, emoji):
+        self.e.insert('end', emoji)
 
     def post_msg(self, event=None):
         m = self.get_msg()
@@ -158,18 +188,20 @@ class ChatWindow:
 
     def force_close(self):
         try:
+            self.frame.destroy()
             self.window.destroy()
             self.sysclose = True
             sio.disconnect()
         finally:
+            self.frame.destroy()
             self.window.destroy()
             sys.exit()
 
     # 关闭窗口的同时，断开连接
     def on_closing(self):
-        face = Emoji.get('FACE WITH PLEADING EYES').char
-        ret = Messagebox.okcancel('你确定要关闭吗' + face, title='确认关闭')
+        ret = Messagebox.okcancel('你确定要关闭吗', title='确认关闭')
         if ret == '确定':
+            self.frame.destroy()
             self.window.destroy()
             sio.disconnect()
             sys.exit()
