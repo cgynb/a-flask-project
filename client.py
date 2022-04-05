@@ -71,8 +71,8 @@ def handle_msg(data):
         for name, sid in data['name_list']:
             w.add_user(name)
     else:
-        if data['username'] != w.username:
-            flash_msg("有新消息", data['username'] + ':' + data['msg'])
+        # if data['username'] != w.username:
+        #     flash_msg("有新消息", data['username'] + ':' + data['msg'])
         w.show_msg(data['username'], data['msg'])
 
 
@@ -166,6 +166,7 @@ class ChatWindow:
     def post_msg(self, event=None):
         m = self.get_msg()
         sio.emit('msg', {'action': 'send msg', 'username': self.username, 'msg': m})
+        self.e.delete('0.0', 'end')
 
     def get_msg(self):
         return self.e.get('0.0', 'end').strip()
@@ -174,7 +175,6 @@ class ChatWindow:
         if message:
             self.msg_box.insert('end', '\n' + username + ':' + '\n   ' + message)
             self.msg_box.text.yview_moveto(1)
-            self.e.delete('0.0', 'end')
 
     def add_user(self, username):
         # print(username)
@@ -195,17 +195,17 @@ class ChatWindow:
         finally:
             self.frame.destroy()
             self.window.destroy()
-            sys.exit()
+            sys.exit(0)
 
     # 关闭窗口的同时，断开连接
     def on_closing(self):
         ret = Messagebox.okcancel('你确定要关闭吗', title='确认关闭')
-        if ret == '确定':
+        if ret == '确定' or ret == 'OK':
             self.frame.destroy()
             self.window.destroy()
             sio.disconnect()
-            sys.exit()
-        elif ret == '取消':
+            sys.exit(0)
+        elif ret == '取消' or ret == 'Cancel':
             return
 
 
