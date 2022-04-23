@@ -111,11 +111,13 @@ class ChatWindow:
         # 会话框
         self.msg_box = ScrolledText(self.window, width=100, height=22)
         self.msg_box.autohide_scrollbar()
+        self.msg_box.text.bind("<Button-1>", lambda _: "break")
         self.msg_box.place(x=30, y=60)
 
         # 用户列表
         self.user_list = ScrolledText(self.window, width=24, height=15)
         self.user_list.autohide_scrollbar()
+        self.user_list.text.bind("<Button-1>", lambda _: "break")
         self.user_list.place(x=780, y=0)
         self.user_list.insert('end', '在线用户：')
 
@@ -228,7 +230,7 @@ if __name__ == '__main__':
 
     if not w.sysclose:
         try:
-            sio.connect(f'http://{w.ip}:5000')
+            sio.connect(f'http://{w.ip}:12345')
             sio.wait()
         except Exception as exception:
             flash_msg(title='连接问题', message='未能连接到服务器')
