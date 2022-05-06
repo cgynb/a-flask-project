@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}管理界面{% endblock %}
+{% block head %}
+    <style>
+        .tabs .indicator {
+            background-color: #009688;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+
+    <div class="row">
+        <div class="col s12">
+            <ul class="tabs tabs-fixed-width">
+                <li class="tab"><a class="teal-text" href="#food">商品管理</a></li>
+                <li class="tab"><a class="teal-text" href="#comment">评论管理</a></li>
+                <li class="tab"><a class="teal-text" href="#userinfo">用户信息</a></li>
+                <li class="tab"><a class="teal-text" href="#coupons">优惠券管理</a></li>
+                <li class="tab"><a class="teal-text" href="#notice">发布通知</a></li>
+            </ul>
+        </div>
+        <div id="food" class="col s12"></div>
+        <div id="comment" class="col s12"></div>
+        <div id="userinfo" class="col s12"></div>
+        <div id="coupons" class="col s12">优惠券管理</div>
+        <div id="notice" class="col s12">
+            <div class="container">
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input type="text" class="validate notice-title">
+                        <label>标题</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input type="date" class="notice-date">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <textarea id="textarea1" class="materialize-textarea notice-content" length="80"></textarea>
+                        <label for="textarea1">通知内容</label>
+                    </div>
+                </div>
+                <a class="waves-effect waves-teal btn-flat right post-notice">发布</a>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block script %}
+    <script src="/static/js/charge.js"></script>
+{% endblock %}

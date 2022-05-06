@@ -1,0 +1,24 @@
+-
+ order_id: 21185685Bfbc843
+ rider_salary: 3
+ arrive: ''
+ status: 200
+ message: success
+-
+ order_id: 21185685Bfbc843
+ rider_salary: ''
+ arrive: arrive
+ status: 200
+ message: success
+-
+ order_id: 21185685Bfbc843
+ rider_salary: ''
+ arrive: ''
+ status: 200
+ message: success
+-
+ order_id: ''
+ rider_salary:
+ arrive:
+ status: 400
+ message: parameters error

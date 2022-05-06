@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, render_template, request, session, redirect, flash, url_for, g
+from flask import Blueprint, jsonify, render_template, request, redirect, flash, url_for, g, make_response
 from exts import mail, db
 import string
 import random
@@ -10,6 +10,8 @@ from flask_mail import Message
 from models import EmailCaptchaModel, UserModel, FoodModel, OrderModel
 from forms import RegisterForm, LoginForm, NewUserNameForm, NewPasswordForm
 from require import login_required, merchant_required
+
+from token_operation import create_token, validate_token
 
 bp = Blueprint('user', __name__, url_prefix='/user')
 
@@ -65,38 +67,43 @@ def get_captcha():
                 captcha_model = EmailCaptchaModel(email=email, captcha=captcha)
                 db.session.add(captcha_model)
                 db.session.commit()
-            return jsonify({'status': 200, 'message': '发送成功'})
+            return jsonify({'status': 200, 'message': 'success'})
         else:
-            return jsonify({'status': 400, 'message': '请填写邮箱'})
+            return jsonify({'status': 400, 'message': 'please enter your email'})
     except:
-        return jsonify({'status': 400, 'message': '未知错误'})
+        return jsonify({'status': 400, 'message': 'unknown error'})
 
 
 @bp.route('/login/', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
+        if hasattr(g, 'user'):
+            return redirect('/')
         return render_template('login.html')
     else:
         form = LoginForm(request.form)
         if form.validate():
             user = UserModel.query.filter(UserModel.username == form.username.data).first()
+            resp = make_response(redirect(url_for('food.index')))
+            g.user = user
             flash('登录成功')
-            session['username'] = user.username
-            session['role'] = user.role
-            session['user_id'] = user.id
-            return redirect(url_for('food.index'))
+            return resp
         else:
-            flash('登陆失败')
+            flash('登录失败')
             return render_template('login.html')
 
 
 @bp.route('/logout/')
+@login_required
 def logout():
-    session.clear()
-    return redirect(url_for("food.index"))
+    resp = make_response(redirect(url_for("food.index")))
+    resp.logout = True
+    flash('退出登录')
+    return resp
 
 
 @bp.route('/change_username/', methods=['POST'])
+@login_required
 def change_username():
     form = NewUserNameForm(request.form)
     if form.validate():
@@ -105,11 +112,12 @@ def change_username():
         db.session.commit()
         flash('修改成功')
     else:
-        flash('用户名应在3-20个字符之间')
+        flash('请输入3-20个字符的用户名')
     return redirect(url_for('user.homepage'))
 
 
 @bp.route('/change_password/', methods=['POST'])
+@login_required
 def change_password():
     form = NewPasswordForm(request.form)
     if form.validate():
@@ -118,33 +126,38 @@ def change_password():
         db.session.commit()
         flash('修改成功')
     else:
-        flash('原密码不正确')
+        flash('原密码不正确 or 密码格式不正确')
     return redirect(url_for('user.homepage'))
 
 
 @bp.route('/upload_avatar/', methods=['POST'])
+@login_required
 def upload_avatar():
     f = request.files.get('file')
-    if not os.path.isdir(f"static/images/avatar/"):
-        os.mkdir(f"static/images/avatar/")
-    # 时间戳后5位，随机数六位，用户id，组成文件名
-    t = int(time.time()) % 100000
-    randomstring = ''.join(random.sample(string.ascii_letters + string.digits, 6))
-    last = os.path.splitext(f.filename)[-1]
-    fname = f'{t}{randomstring}{g.user.id}{last}'
-    user = UserModel.query.filter(UserModel.id == g.user.id).first()
-    # 如果原本有图像，先删除
-    # 文件路径   static前不能加 /
-    if user.avatar and os.path.exists(f'static/images/avatar/{user.avatar}'):
-
-        os.remove(f'static/images/avatar/{user.avatar}')
-    user.avatar = fname
-    db.session.commit()
-    f.save(os.path.join(f"static/images/avatar/", fname))
-    return ''
+    if f:
+        if not os.path.isdir(f"static/images/avatar/"):
+            os.mkdir(f"static/images/avatar/")
+        # 时间戳后5位，随机数六位，用户id，组成文件名
+        t = int(time.time()) % 100000
+        randomstring = ''.join(random.sample(string.ascii_letters + string.digits, 6))
+        last = os.path.splitext(f.filename)[-1]
+        fname = f'{t}{randomstring}{g.user.id}{last}'
+        user = UserModel.query.filter(UserModel.id == g.user.id).first()
+        # 如果原本有图像，先删除
+        # 文件路径   static前不能加 /
+        if user.avatar and os.path.exists(f'static/images/avatar/{user.avatar}'):
+            os.remove(f'static/images/avatar/{user.avatar}')
+        user.avatar = fname
+        user.audit = False
+        db.session.commit()
+        f.save(os.path.join(f"static/images/avatar/", fname))
+        return jsonify({'status': 200, 'message': 'success'})
+    else:
+        return jsonify({'status': 403, 'message': 'please provide your avatar'})
 
 
 @bp.route('/chatlist/', methods=['GET'])
+@login_required
 def chatlist():
     return render_template('chatlist.html', userid=g.user.id)
 
@@ -152,6 +165,7 @@ def chatlist():
 # ——————————————————————————————————商家——————————————————————————————————
 
 @bp.route('/food_photo/', methods=['GET', 'POST'])
+@login_required
 def upload_food_photo():
     if request.method == 'GET':
         return render_template('merchant/upload_food_photo.html')
@@ -166,6 +180,7 @@ def upload_food_photo():
         if food.address and os.path.exists(f'static/images/food/{fname}'):
             os.remove(f'static/images/food/{fname}')
         food.address = fname
+        food.audit = False
         db.session.commit()
         f.save(os.path.join(f"static/images/food/", fname))
         return redirect(url_for('user.homepage'))

@@ -1,0 +1,30 @@
+-
+ room: 31259072aJN4t4
+ userid: 3
+ status: 200
+ message: success
+-
+ room: 31259072aJN4t4
+ userid: 4
+ status: 200
+ message: success
+-
+ room: 31259072aJN4t4
+ userid: 14
+ status: 200
+ message: success
+-
+ room: 31259072aJN4t4
+ userid: 999
+ status: 404
+ message: user not found
+-
+ room: ''
+ userid: ''
+ status: 400
+ message: parameters is required
+-
+ room: 31259072aJN4t4
+ userid: ''
+ status: 400
+ message: parameters is required

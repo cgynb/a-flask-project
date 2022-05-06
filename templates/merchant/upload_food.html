@@ -5,27 +5,52 @@
 {% block body %}
     <div class="row">
         <div class="col s12 m8 offset-m2">
-            <form action="{{ url_for('food.upload_food') }}" method="post">
                 <div class="row">
                     <div class="input-field col s12 m6">
-                        <input id="foodname" type="text" class="validate" name="foodname">
+                        <input id="foodname" type="text" class="validate foodname" name="foodname">
                         <label for="foodname">食品名称</label>
                     </div>
                     <div class="input-field col s12 m6">
-                        <input id="price" type="text" class="validate" name="foodprice">
+                        <input id="price" type="text" class="validate foodprice" name="foodprice">
                         <label for="price">定价</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12 m12">
-                        <textarea id="icon_prefix2" class="materialize-textarea" name="fooddesc"></textarea>
+                        <textarea id="icon_prefix2" class="materialize-textarea fooddesc" name="fooddesc"></textarea>
                         <label for="icon_prefix2">食物详情</label>
                     </div>
                 </div>
-                <button class="btn waves-effect waves-light right" type="submit" name="action">提交
+                <button class="btn waves-effect waves-light right submit-food" type="submit" name="action">提交
                     <i class="material-icons right">send</i>
                 </button>
-            </form>
         </div>
     </div>
+{% endblock %}
+{% block script %}
+<script>
+$(document).ready(function () {
+    $('.submit-food').click(function () {
+        $.ajax({
+            type: 'POST',
+            url: '/elebu/api/v1/food/',
+            data: {
+                foodname: $('.foodname').val(),
+                foodprice: $('.foodprice').val(),
+                fooddesc: $('.fooddesc').val()
+            },
+            success: function (resp) {
+                if (resp['status'] === 200) {
+                    Materialize.toast('上传成功');
+                }else{
+                    Materialize.toast('上传失败');
+                }
+            },
+            error: function () {
+                Materialize.toast('上传失败，请检查网络');
+            }
+        })
+    })
+})
+</script>
 {% endblock %}

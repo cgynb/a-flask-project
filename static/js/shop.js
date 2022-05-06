@@ -30,6 +30,7 @@ function merchantInfo() {
 
 function minus() {
     $('.minus').click(function () {
+            $(this).parent().parent().click();
             if (Number($(this).next().text()) !== 0) {
                 let foodId = $(this).next().attr('food_id');
                 let n = Number($(this).next().text()) - 1;
@@ -53,6 +54,7 @@ function minus() {
 
 function plus() {
     $('.plus').click(function () {
+        $(this).parent().parent().click();
         let foodId = $(this).prev().attr('food_id');
         let n = Number($(this).prev().text()) + 1;
         let foodPrice = $(this).next().text().replace('￥', '');
@@ -91,8 +93,11 @@ function checkout() {
                 type: 'POST',
                 url: '/elebu/api/v1/order/',
                 data: {data: JSON.stringify(datas)},
-                success: function () {
-                    Materialize.toast('购买成功', 4000);
+                success: function (resp) {
+                    if (resp['status'] === 200) {
+                        console.log(datas)
+                        Materialize.toast('购买成功', 4000);
+                    }
                 },
                 error: function () {
                     Materialize.toast('购买失败', 4000);
@@ -207,7 +212,7 @@ function getComment() {
             for (let cmt of cmts) {
                 $('.comment-box').append(`
                                                 <div class="row">
-                                                <div class="col m11 s10 offset-m1 offset-s2">
+                                                    <div class="col m11 s10 offset-m1 offset-s2">
                                                     <hr>
                                                 </div>
                                                     <div class="col m1 s3">
@@ -220,8 +225,8 @@ function getComment() {
                                                             <b>${cmt['username']}</b>
                                                         </div>
                                                         <span class="black-text" id="${cmt['commentid']}">
-                                                        ${cmt['comment']}
-                                                      </span>
+                                                            ${cmt['comment']}
+                                                        </span>
                                                         <a class="waves-effect waves-teal btn-flat right reply">回复</a>
                                                     </div>
                                                 </div>
@@ -252,10 +257,11 @@ function getComment() {
 
 function reply() {
     $('.comment-box').on('click', '.reply', function () {
-        if ($(this).parent().next()[0]) {
+        // console.log($(this).parent().next()[0])
+        if($(this).text() === '收起'){
             $(this).text('回复');
             $(this).parent().next().remove();
-        } else {
+        } else if ($(this).text() === '回复'){
             $(this).text('收起');
             let comment_id = $(this).prev().attr('id');
             $(this).parent().parent().append(`
@@ -282,7 +288,9 @@ function reply() {
             },
             success: function (resp) {
                 if (resp['status'] === 200) {
-                    self.parent().parent().parent().append(`<div class="row">
+                    self.parent().parent().prev().children('a').text('回复')
+                    console.log(self.parent().parent().prev().children('a')[0])
+                    self.parent().parent().parent().after(`<div class="row">
                                         <div class="col m1 offset-m1 s3 offset-s1">
                                             <div class="col m10 s9">
                                                 <img src="/static/images/avatar/${resp['data']['useravatar']}" onerror="this.src='/static/images/logo.jpg'" alt="" class="circle responsive-img">
@@ -293,9 +301,10 @@ function reply() {
                                                 <b>${resp['data']['username']}</b>
                                             </div>
                                             <div class="comment">
-                                          <span class="black-text">
-                                            ${resp['data']['reply']}
-                                          </span></div>
+                                              <span class="black-text">
+                                                ${resp['data']['reply']}
+                                              </span>
+                                          </div>
                                         </div>
                                     </div>`);
                     self.parent().parent().remove();
@@ -305,7 +314,7 @@ function reply() {
                 }
             },
             error: function () {
-                console.log('失败');
+                console.log('评论失败');
             }
         });
 

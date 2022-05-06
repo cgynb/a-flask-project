@@ -1,0 +1,30 @@
+-
+ comment_type: comment
+ comment_id: 8
+ status: 200
+ message: success
+-
+ comment_type: subcomment
+ comment_id: 23
+ status: 200
+ message: success
+-
+ comment_type: sub
+ comment_id: 99
+ status: 400
+ message: parameters error
+-
+ comment_type: c
+ comment_id: 99
+ status: 400
+ message: parameters error
+-
+ comment_type: comment
+ comment_id: 9999
+ status: 404
+ message: comment not found
+-
+ comment_type: subcomment
+ comment_id: 999999
+ status: 404
+ message: subcomment not found

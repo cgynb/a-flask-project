@@ -1,0 +1,36 @@
+-
+ food_id: 34
+ del_thing: ''
+ role: 2
+ status: 200
+ message: success
+-
+ food_id: 25
+ del_thing: ''
+ role: 2
+ status: 403
+ message: the food is not yours
+-
+ food_id: 25
+ del_thing: photo
+ role: 4
+ status: 200
+ message: success
+-
+ food_id: 25
+ del_thing: foodname
+ role: 4
+ status: 200
+ message: success
+-
+ food_id: 25
+ del_thing: fooddesc
+ role: 4
+ status: 200
+ message: success
+-
+ food_id: 25
+ del_thing: hhhh
+ role: 4
+ status: 400
+ message: parameters error

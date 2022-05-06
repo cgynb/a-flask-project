@@ -42,10 +42,9 @@
                              onerror="this.src='{{ avatars.robohash(user.username) }}'">
                         <p class="black-text display-username center"></p>
                     </div>
-                    <div class="col s1 join-time">
-                        入住时间
+                    <div class="col s3 join-time">
+                        入驻：
                     </div>
-                    <div class="col s2">已消费￥</div>
                     <div class="col s7 selfintroduce-display"><b>个人介绍：</b></div>
                 </div>
             </div>
@@ -103,7 +102,9 @@
         </div>
     </div>
     <div id="test2" class="col s12">
+        {% if user.role == 2 %}
         <a href="/food/">上架食品</a>
+        {% endif %}
         <ul class="collapsible popout belong" data-collapsible="accordion">
         </ul>
     </div>

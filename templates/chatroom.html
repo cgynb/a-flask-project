@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}联系他们{% endblock %}
+{% block title %}联系TA们{% endblock %}
 {% block head %}
     <style>
         .chat-box {
@@ -50,17 +50,19 @@
 {% block script %}
     <script src="/static/js/socket.io.js"></script>
     <script>
+    // 获取url中指定参数
     function getQueryVariable(variable) {
-        var query = window.location.search.substring(1);
-        var vars = query.split("&");
-        for (var i = 0; i < vars.length; i++) {
-            var pair = vars[i].split("=");
+        let query = window.location.search.substring(1);
+        let vars = query.split("&");
+        for (let i = 0; i < vars.length; i++) {
+            let pair = vars[i].split("=");
             if (pair[0] == variable) {
                 return pair[1];
             }
         }
         return null;
     }
+
     let chatBox = $('.chat-box');
     let sendMsgBtn = $('.btn');
     let msgInp = $('.put');
@@ -108,10 +110,10 @@
     let socket = io();
     socket.connect(location.protocol + '//' + document.domain + ':' + location.port);
     // 加入房间
-    socket.emit('join', {
-        username: username,
-        room: room
-    })
+     socket.emit('join', {
+         username: username,
+         room: room
+     })
 
     // 发送消息
     sendMsgBtn.on('click', function () {
@@ -179,12 +181,5 @@
         chatBox.append(msg);
         chatBox[0].scrollTop = chatBox[0].scrollHeight;
     })
-    // 离开房间
-    window.onbeforeunload = function (e) {
-        socket.emit('leave', {
-                username: username,
-                room: room
-            });
-    }
     </script>
 {% endblock %}

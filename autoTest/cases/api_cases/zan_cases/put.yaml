@@ -1,0 +1,34 @@
+-
+ order_id: 3120327hgELud4
+ zan: zaned
+ food_id: 24
+ status: 200
+ msg: success
+
+-
+ order_id: 3120327hgELud4
+ zan: tozan
+ food_id: 24
+ status: 200
+ msg: success
+
+-
+ order_id: 3120327hgELud4
+ zan: hhh
+ food_id: 24
+ status: 400
+ msg: parameters error
+
+-
+ order_id: 3120327hgELud4
+ zan: zaned
+ food_id: 999999999
+ status: 404
+ msg: food not found
+-
+ order_id: include<stdio.h>
+ zan: zaned
+ food_id: 24
+ status: 404
+ msg: order not found
+

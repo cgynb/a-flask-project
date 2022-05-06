@@ -1,0 +1,20 @@
+-
+ num: ''
+ merchant_id: 3
+ status: 200
+ message: success
+-
+ num: ''
+ merchant_id: hh
+ status: 400
+ message: parameters error
+-
+ num: all
+ merchant_id: 3
+ status: 200
+ message: success
+-
+ num: ''
+ merchant_id: ''
+ status: 400
+ message: parameters error

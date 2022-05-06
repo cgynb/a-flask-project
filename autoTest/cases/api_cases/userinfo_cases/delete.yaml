@@ -1,0 +1,30 @@
+-
+ del_thing: avatar
+ del_thing_detail: /static/images/1.jpg
+ user_id: 3
+ status: 404
+ message: no avatar
+-
+ del_thing: selfintroduce
+ del_thing_detail: ''
+ user_id: 3
+ status: 200
+ message: success
+-
+ del_thing: tag
+ del_thing_detail: test_tag
+ user_id: 3
+ status: 200
+ message: success
+-
+ del_thing: username
+ del_thing_detail: ''
+ user_id: 3
+ status: 200
+ message: success
+-
+ del_thing: hhh
+ del_thing_detail: ''
+ user_id: jl
+ status: 400
+ message: parameters error

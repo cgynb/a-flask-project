@@ -1,0 +1,18 @@
+-
+ foodname: test_food
+ foodprice: 90
+ fooddesc: 给力
+ status: 200
+ message: success
+-
+ foodname: ''
+ foodprice: 90
+ fooddesc: 给力
+ status: 400
+ message: parameters error
+-
+ foodname: test_food
+ foodprice: hh
+ fooddesc: 给力
+ status: 400
+ message: parameters error

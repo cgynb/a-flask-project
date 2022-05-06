@@ -2,15 +2,24 @@ import pprint
 from models import UserModel
 import time
 import datetime
+# from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from flask import current_app
 
 
-def order_overdate(order):
-    now_time = int(time.mktime(datetime.datetime.now().timetuple()))
-    order_time = int(time.mktime(order.order_date.timetuple()))
-    if now_time - order_time >= 86400 * 7:
-        return False
-    else:
-        return True
+# def create_token(username, user_id):
+#     s = Serializer(current_app.config['SECRET_KEY'], salt=current_app.config['SALT'])
+#     token = s.dumps({"username": username, 'user_id': user_id}).decode("utf-8")
+#     return token
+#
+#
+# def verify_token(token):
+#     s = Serializer(current_app.config['SECRET_KEY'], salt=current_app.config['SALT'])
+#     try:
+#         data = s.loads(token)
+#     except BaseException as _:
+#         print(_)
+#         return None
+#     return data
 
 
 def turn_userid_to_name(userid):

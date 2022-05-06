@@ -248,7 +248,7 @@ function getTags() {
         method: 'GET',
         url: '/elebu/api/v1/tag/',
         success: function (resp) {
-            let d = resp;
+            let d = resp['data'];
             $('.chips-initial').material_chip({
                 placeholder: '添加标签',
                 data: d
@@ -339,11 +339,12 @@ function showFood(resp) {
 function foodInfo() {
     $.ajax({
         type: 'GET',
-        url: '/elebu/api/v1/food',
+        url: '/elebu/api/v1/food/',
         data: {
             num: 'self'
         },
         success: function (resp) {
+            console.log(resp)
             showFood(resp)
             $('.delfood').click(function (e) {
                 deleteFood(e);
@@ -357,12 +358,18 @@ function foodInfo() {
 
 // 展示个人的头像，用户名等基础信息
 function showSelfInfo(resp) {
+    let join_date = new Date(resp['join_time']);
+    let now_date = new Date()
+    // console.log(join_date)
+    // console.log(now_date)
+    let Difference_In_Time = now_date.getTime() - join_date.getTime();
+	let Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
     $('.avatar').attr('src', `/static/images/avatar/${resp['avatar']}`);
     $('.display-username').append(`${resp['username']}`);
     $('.selfintroduce-display').append(`<p >${resp['selfintroduce']}</p>`);
     $('#textarea1').val(`${resp['selfintroduce']}`);
     $('#textarea1').trigger('autoresize');
-    $('.join-time').append(`${resp['join_time']}`);
+    $('.join-time').append(`${Math.floor(Difference_In_Days)}天`);
 }
 
 // 展示信息（基础信息，订单，商家食物，商家可接订单）
@@ -473,6 +480,7 @@ function zan() {
             food_id: food_id
         },
         success: function (resp) {
+            // console.log(resp)
             if(resp['status'] === 200){
                 $(e.target).removeClass('zaned');
                 $(e.target).addClass('tozan');

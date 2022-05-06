@@ -1,0 +1,28 @@
+-
+ user: user
+ arrive: arrive
+ user_id:
+ role:
+ status: 200
+ message: success
+-
+ user: ''
+ arrive: ''
+ user_id: 4
+ role: customer
+ status: 200
+ message: success
+-
+ user: ''
+ arrive: ''
+ user_id: 3
+ role: merchant
+ status: 200
+ message: success
+-
+ user: ''
+ arrive: ''
+ user_id: 14
+ role: rider
+ status: 200
+ message: success

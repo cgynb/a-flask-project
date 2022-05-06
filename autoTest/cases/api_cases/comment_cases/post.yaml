@@ -1,0 +1,29 @@
+-
+ sub: 1
+ rpy: test_reply
+ comment:
+ merchant_id:
+ status: 200
+ message: success
+-
+ sub:
+ rpy:
+ comment: test_comment
+ merchant_id: 3
+ status: 200
+ message: success
+-
+ sub: 8
+ rpy:
+ comment: test_comment
+ merchant_id:
+ status: 400
+ message: parameters error
+-
+ sub:
+ rpy: test_rpy
+ comment: test_comment
+ merchant_id:
+ status: 400
+ message: parameters error
+

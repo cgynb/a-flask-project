@@ -1,0 +1,10 @@
+-
+ pass: pass
+ food_id: 24
+ status: 200
+ message: success
+-
+ pass: pas
+ food_id: 24
+ status: 400
+ message: parameters error

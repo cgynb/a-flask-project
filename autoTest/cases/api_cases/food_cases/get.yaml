@@ -1,0 +1,20 @@
+-
+ num: self
+ merchant_id: ''
+ status: 200
+ message: success
+-
+ num: ''
+ merchant_id: 3
+ status: 200
+ message: success
+-
+ num: all
+ merchant_id: ''
+ status: 200
+ message: success
+-
+ num: al
+ merchant_id: fsdf
+ status: 400
+ message: parameters error

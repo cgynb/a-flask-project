@@ -1,0 +1,18 @@
+-
+ pass: pass
+ user_id: 3
+ selfintroduce: ''
+ status: 200
+ message: success
+-
+ pass: ''
+ user_id: ''
+ selfintroduce: test_selfintroduce
+ status: 200
+ message: success
+-
+ pass: pa
+ user_id: 3
+ selfintroduce: ''
+ status: 400
+ message: parameters error

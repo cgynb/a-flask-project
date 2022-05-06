@@ -1,0 +1,24 @@
+-
+ username: cgy
+ password: 111111
+ msg: 登录成功
+-
+ username: cgy
+ password: 1111111111111
+ msg: 登录失败
+-
+ username: cg
+ password: 111111
+ msg: 登录失败
+-
+ username: merchant_cjl
+ password: 111111
+ msg: 登录成功
+-
+ username: rider_cqh
+ password: 111111
+ msg: 登录成功
+-
+ username: admin_cgy
+ password: 111111
+ msg: 登录成功

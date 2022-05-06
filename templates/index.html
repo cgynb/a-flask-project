@@ -52,11 +52,40 @@
             </li>
         </ul>
     </div>
+  <ul class="pagination tag-classify">
+    <li class="waves-effect"><a href="?tag=甜品">甜品</a></li>
+    <li class="waves-effect"><a href="?tag=饮品">饮品</a></li>
+    <li class="waves-effect"><a href="?tag=娱乐">娱乐</a></li>
+    <li class="waves-effect"><a href="?tag=超市">超市</a></li>
+    <li class="waves-effect"><a href="?tag=鲜花">鲜花</a></li>
+    <li class="waves-effect"><a href="?tag=蔬菜">蔬菜</a></li>
+    <li class="waves-effect"><a href="?tag=水果">水果</a></li>
+    <li class="waves-effect"><a href="?tag=药品">药品</a></li>
+    <li class="waves-effect"><a href="?tag=早餐">早餐</a></li>
+    <li class="waves-effect"><a href="?tag=午餐">午餐</a></li>
+    <li class="waves-effect"><a href="?tag=晚餐">晚餐</a></li>
+    <li class="waves-effect"><a href="?tag=夜宵">夜宵</a></li>
+    <li class="waves-effect"><a href="?tag=蛋糕">蛋糕</a></li>
+    <li class="waves-effect"><a href="?tag=面包">面包</a></li>
+    <li class="waves-effect"><a href="?tag=日料">日料</a></li>
+    <li class="waves-effect"><a href="?tag=西餐">西餐</a></li>
+    <li class="waves-effect"><a href="?tag=中餐">中餐</a></li>
+    <li class="waves-effect"><a href="?tag=小吃">小吃</a></li>
+    <li class="waves-effect"><a href="?tag=快餐">快餐</a></li>
+  </ul>
     <div class="row merchant-list">
     </div>
-    <ul class="pagination center">
-
+    <ul id="pagination" class="pagination center">
     </ul>
+    <div id="notice" class="modal">
+        <div class="modal-content">
+            <h4>通知标题</h4>
+            <p>通知内容</p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">关闭</a>
+        </div>
+    </div>
 {% endblock %}
 {% block script %}
     <script src="/static/js/index.js"></script>

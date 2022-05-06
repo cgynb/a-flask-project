@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% block title %}店铺{% endblock %}
 {% block head %}
+    <link rel="stylesheet" href="/static/css/share.min.css" type="text/css">
+    <script src="/static/js/social-share.min.js" type="application/javascript"></script>
     <style>
         .food-img {
             width: auto;
@@ -32,9 +34,10 @@
             <div class="col offset-s1">
                 <h4 class="teal-text merchant-name"></h4>
                 <a class="waves-effect waves-light btn follow">关注</a>
+                <div class="social-share " data-sites="weibo, wechat, douban, qq, qzone" data-mobile-sites="weibo, douban, qq, qzone"
+        align="left">分享到: </div>
             </div>
         </div>
-
         <div class="row">
             <div class="col m10 offset-m1 s12">
                 <ul class="collapsible food-list" data-collapsible="accordion"></ul>

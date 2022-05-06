@@ -17,7 +17,7 @@ SEND_FILE_MAX_AGE_DEFAULT = 0
 SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 SECRET_KEY = 'hhhhhhhh'
-
+SALT = 'jjjj'
 
 # 邮箱配置
 MAIL_SERVER = 'smtp.qq.com'
@@ -26,5 +26,5 @@ MAIL_USE_TLS = False
 MAIL_USE_SSL = True
 MAIL_DEBUG = True
 MAIL_USERNAME = '948628463@qq.com'
-MAIL_PASSWORD = ''
+MAIL_PASSWORD = 'asjgvyfmrgbtbbij'
 MAIL_DEFAULT_SENDER = '948628463@qq.com'

@@ -1,0 +1,43 @@
+-
+ username: cgy
+ password: 111111
+ date: '2022-03-31'
+ title: test_notice_title
+ content: test_notice_content
+ status: 403
+ msg: you are not admin
+-
+ username: admin_cgy
+ password: 111111
+ date: '2022-03-31'
+ title: test_notice_title
+ content: test_notice_content
+ status: 200
+ msg: success
+
+-
+ username: admin_cgy
+ password: 111111
+ date: ''
+ title: test_notice_title
+ content: test_notice_content
+ status: 400
+ msg: please input date
+
+-
+ username: admin_cgy
+ password: 111111
+ date: '2022-03-31'
+ title: ''
+ content: test_notice_content
+ status: 400
+ msg: please input title
+
+-
+ username: admin_cgy
+ password: 111111
+ date: '2022-03-31'
+ title: test_notice_title
+ content: ''
+ status: 400
+ msg: please input content

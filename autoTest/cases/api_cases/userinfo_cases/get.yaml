@@ -1,0 +1,49 @@
+-
+ num: self
+ merchant_id: ''
+ keyword: ''
+ tag: ''
+ page: ''
+ status: 200
+ message: success
+-
+ num: one
+ merchant_id: 3
+ keyword: ''
+ tag: ''
+ page: ''
+ status: 200
+ message: success
+-
+ num: merchant
+ merchant_id:
+ keyword: ''
+ tag: 'null'
+ page: 3
+ status: 200
+ message: success
+-
+ num: merchant
+ merchant_id:
+ keyword: cjl
+ tag: ''
+ page: 1
+ status: 200
+ message: success
+-
+ num: merchant
+ merchant_id:
+ keyword:
+ tag: c
+ page: 1
+ status: 200
+ message: success
+-
+ num: all
+ merchant_id:
+ keyword:
+ tag:
+ page:
+ status: 200
+ message: success
+

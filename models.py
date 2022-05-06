@@ -20,6 +20,7 @@ class UserModel(db.Model):
     join_time = db.Column(db.DateTime, default=datetime.now)
     selfintroduce = db.Column(db.Text)
     avatar = db.Column(db.String(30))
+    audit = db.Column(db.Boolean, default=False)
 
 
 class TagModel(db.Model):
@@ -27,19 +28,20 @@ class TagModel(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     t = db.Column(db.String(500))
+    audit = db.Column(db.Boolean, default=False)
 
 
 class FoodModel(db.Model):
     __tablename__ = 'food'
     id = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True)
     merchant_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    merchant_name = db.Column(db.String(100), db.ForeignKey('user.username'))
     food_price = db.Column(db.Integer)
     food_name = db.Column(db.String(50))
     food_desc = db.Column(db.Text)
     zans = db.Column(db.Integer, default=0)
     order_number = db.Column(db.Integer, default=0)
     address = db.Column(db.String(30))
+    audit = db.Column(db.Boolean, default=False)
 
 
 class OrderModel(db.Model):
@@ -80,6 +82,7 @@ class CommentModel(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     merchant_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     comment = db.Column(db.Text)
+    audit = db.Column(db.Boolean, default=False)
 
 
 class SubcommentModel(db.Model):
@@ -88,6 +91,7 @@ class SubcommentModel(db.Model):
     sub = db.Column(db.Integer, db.ForeignKey('comment.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     comment = db.Column(db.Text)
+    audit = db.Column(db.Boolean, default=False)
 
 
 class MessageModel(db.Model):
@@ -100,3 +104,11 @@ class MessageModel(db.Model):
     user3 = db.Column(db.Integer, db.ForeignKey('user.id'))
     user2_read = db.Column(db.Boolean, default=False)
     user3_read = db.Column(db.Boolean, default=False)
+
+
+class NoticeModel(db.Model):
+    __tablename__ = 'notice'
+    id = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True)
+    title = db.Column(db.String(20))
+    content = db.Column(db.Text)
+    date = db.Column(db.String(20))

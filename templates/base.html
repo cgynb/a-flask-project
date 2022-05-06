@@ -8,6 +8,14 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        a:hover {
+            cursor: pointer;
+        }
+        i:hover {
+            cursor: pointer;
+        }
+    </style>
     {% block head %}{% endblock %}
     <title>{% block title %}{% endblock %}</title>
 </head>
@@ -25,9 +33,14 @@
   <nav>
     <div class="nav-wrapper teal">
       <a href="{{ url_for('food.index') }}" class="brand-logo center">帅团外卖</a>
-      <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+      <a data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
       <ul class="right hide-on-med-and-down">
           {% if user %}
+              {% if user.role == 2 %}
+              {% elif user.role == 3 %}
+              {% elif user.role == 4 %}
+                  <li><a href="{{ url_for('admin.charge') }}">管理员</a></li>
+              {% endif %}
             <li><a href="{{ url_for('user.homepage') }}">个人中心</a></li>
             <li><a href="{{ url_for('user.logout') }}">退出登录</a></li>
           {% else %}
