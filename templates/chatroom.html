@@ -108,6 +108,7 @@
         }
     });
     let socket = io();
+    console.log(location.protocol + '//' + document.domain + ':' + location.port);
     socket.connect(location.protocol + '//' + document.domain + ':' + location.port);
     // 加入房间
      socket.emit('join', {

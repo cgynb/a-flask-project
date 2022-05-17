@@ -2,16 +2,14 @@ from flask import Blueprint, jsonify, render_template, request, redirect, flash,
 from exts import mail, db
 import string
 import random
-import datetime
 import time
 import os
 from werkzeug.security import generate_password_hash
 from flask_mail import Message
-from models import EmailCaptchaModel, UserModel, FoodModel, OrderModel
+from models import EmailCaptchaModel, UserModel, FoodModel
 from forms import RegisterForm, LoginForm, NewUserNameForm, NewPasswordForm
-from require import login_required, merchant_required
+from require import login_required
 
-from token_operation import create_token, validate_token
 
 bp = Blueprint('user', __name__, url_prefix='/user')
 

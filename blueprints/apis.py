@@ -303,6 +303,8 @@ def orderInfo():
                     and_(OrderModel.merchant_id == user_id, OrderModel.merchant_take_order == False)).all()
             elif request.args.get('role') == 'rider':
                 order_list = OrderModel.query.filter(and_(OrderModel.merchant_take_order == True)).all()
+            else:
+                return jsonify({'status': 400, 'message': 'parameters error'})
             for order in order_list:
                 o = {'customer_id': order.customer_id, 'arrive': order.arrive,
                      'merchant_id': order.merchant_id, 'merchant_take_order': order.merchant_take_order,
